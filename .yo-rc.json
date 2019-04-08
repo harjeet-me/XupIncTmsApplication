@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "gitCompany": "",
+    "baseName": "XupIncTmsApplication",
+    "packageName": "com.xupinc.tms.v1",
+    "packageFolder": "com/xupinc/tms/v1",
+    "serverPort": 8080,
+    "serviceDiscoveryType": false,
+    "authenticationType": "jwt",
+    "uaaBaseName": "../uaa",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "enableSwaggerCodegen": false,
+    "messageBroker": false,
+    "buildTool": "maven",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "enableTranslation": false,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ],
+    "clientFramework": "angularX",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "5.8.2",
+    "jwtSecretKey": "NmRlZWFkYWZhNDc0MzUwMzY2Y2Q3MzA5NDQ4MTEzNGJmZmM0ZWY1NWU2MDE2MmEzZTViMDhiNGQzZmQ4M2EyOTUxMGRhNDVkOGU0NTNkY2Q0ZWIwOGYyMDE5NGZmNjZiZmIzMmE4MDkzYWM5OWRiYjQ1OThkZDEyMTMwYTY3YjM=",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": []
+  },
+  "git-provider": "GitHub",
+  "git-company": "harjeet-me",
+  "repository-name": "XupIncTmsApplication"
+}

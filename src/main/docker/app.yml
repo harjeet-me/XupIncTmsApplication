@@ -1,0 +1,20 @@
+version: '2'
+services:
+    xupinctmsapplication-app:
+        image: xupinctmsapplication
+        environment:
+            - _JAVA_OPTIONS=-Xmx512m -Xms256m
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://xupinctmsapplication-mysql:3306/xupinctmsapplication?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_JEST_URI=http://xupinctmsapplication-elasticsearch:9200
+        ports:
+            - 8080:8080
+    xupinctmsapplication-mysql:
+        extends:
+            file: mysql.yml
+            service: xupinctmsapplication-mysql
+    xupinctmsapplication-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: xupinctmsapplication-elasticsearch
