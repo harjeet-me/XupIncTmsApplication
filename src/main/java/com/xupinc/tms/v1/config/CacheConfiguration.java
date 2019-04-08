@@ -38,6 +38,32 @@ public class CacheConfiguration {
             cm.createCache(com.xupinc.tms.v1.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.xupinc.tms.v1.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.xupinc.tms.v1.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Booking.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Booking.class.getName() + ".bookingItems", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Invoice.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.InvoiceItem.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Insurance.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Contact.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.BookingItem.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Equipment.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Customer.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Customer.class.getName() + ".bookings", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Vendor.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Container.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Driver.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Driver.class.getName() + ".bookingItems", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Location.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Region.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Country.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Department.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Department.class.getName() + ".employees", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Task.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Task.class.getName() + ".jobs", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Employee.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Employee.class.getName() + ".jobs", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Job.class.getName(), jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.Job.class.getName() + ".tasks", jcacheConfiguration);
+            cm.createCache(com.xupinc.tms.v1.domain.JobHistory.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

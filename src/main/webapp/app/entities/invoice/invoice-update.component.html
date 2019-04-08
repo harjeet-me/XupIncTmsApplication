@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-invoice-heading">Create or edit a Invoice</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!invoice.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="invoice.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bookingNo">Booking No</label>
+                    <input type="text" class="form-control" name="bookingNo" id="field_bookingNo"
+                        [(ngModel)]="invoice.bookingNo" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_invoiceTotal">Invoice Total</label>
+                    <input type="number" class="form-control" name="invoiceTotal" id="field_invoiceTotal"
+                        [(ngModel)]="invoice.invoiceTotal" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_invoiceDueDate">Invoice Due Date</label>
+                    <div class="d-flex">
+                        <input id="field_invoiceDueDate" type="datetime-local" class="form-control" name="invoiceDueDate" [(ngModel)]="invoiceDueDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <select class="form-control" name="status" [(ngModel)]="invoice.status" id="field_status" >
+                        <option value="PICKEDUP">PICKEDUP</option>
+                        <option value="ONROAD">ONROAD</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_invoiceTo">Invoice To</label>
+                    <select class="form-control" id="field_invoiceTo" name="invoiceTo" [(ngModel)]="invoice.invoiceTo" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="customerOption.id === invoice.invoiceTo?.id ? invoice.invoiceTo : customerOption" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

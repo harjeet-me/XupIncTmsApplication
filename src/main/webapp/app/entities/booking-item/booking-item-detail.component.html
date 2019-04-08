@@ -1,0 +1,94 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="bookingItem">
+            <h2><span>Booking Item</span> {{bookingItem.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{bookingItem.description}}</span>
+                </dd>
+                <dt><span>Pickup</span></dt>
+                <dd>
+                    <span>{{bookingItem.pickup}}</span>
+                </dd>
+                <dt><span>Drop</span></dt>
+                <dd>
+                    <span>{{bookingItem.drop}}</span>
+                </dd>
+                <dt><span>Source</span></dt>
+                <dd>
+                    <span>{{bookingItem.source}}</span>
+                </dd>
+                <dt><span>Destination</span></dt>
+                <dd>
+                    <span>{{bookingItem.destination}}</span>
+                </dd>
+                <dt><span>Current Location</span></dt>
+                <dd>
+                    <span>{{bookingItem.currentLocation}}</span>
+                </dd>
+                <dt><span>Status</span></dt>
+                <dd>
+                    <span>{{bookingItem.status}}</span>
+                </dd>
+                <dt><span>Detention</span></dt>
+                <dd>
+                    <span>{{bookingItem.detention}}</span>
+                </dd>
+                <dt><span>Chasis In Time</span></dt>
+                <dd>
+                    <span>{{bookingItem.chasisInTime}}</span>
+                </dd>
+                <dt><span>Pod</span></dt>
+                <dd>
+                    <div *ngIf="bookingItem.pod">
+                        <a (click)="openFile(bookingItem.podContentType, bookingItem.pod)">
+                            <img [src]="'data:' + bookingItem.podContentType + ';base64,' + bookingItem.pod" style="max-width: 100%;" alt="bookingItem image"/>
+                        </a>
+                        {{bookingItem.podContentType}}, {{byteSize(bookingItem.pod)}}
+                    </div>
+                </dd>
+                <dt><span>Hazmat</span></dt>
+                <dd>
+                    <span>{{bookingItem.hazmat}}</span>
+                </dd>
+                <dt><span>Recieved By</span></dt>
+                <dd>
+                    <span>{{bookingItem.recievedBy}}</span>
+                </dd>
+                <dt><span>Equipment</span></dt>
+                <dd>
+                    <div *ngIf="bookingItem.equipment">
+                        <a [routerLink]="['/equipment', bookingItem.equipment?.id, 'view']">{{bookingItem.equipment?.number}}</a>
+                    </div>
+                </dd>
+                <dt><span>Driver</span></dt>
+                <dd>
+                    <div *ngIf="bookingItem.driver">
+                        <a [routerLink]="['/driver', bookingItem.driver?.id, 'view']">{{bookingItem.driver?.firstName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Main Booking</span></dt>
+                <dd>
+                    <div *ngIf="bookingItem.mainBooking">
+                        <a [routerLink]="['/booking', bookingItem.mainBooking?.id, 'view']">{{bookingItem.mainBooking?.name}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/booking-item', bookingItem.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
