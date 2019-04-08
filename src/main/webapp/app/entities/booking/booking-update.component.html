@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-booking-heading">Create or edit a Booking</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!booking.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="booking.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="booking.name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_loadNuber">Load Nuber</label>
+                    <input type="text" class="form-control" name="loadNuber" id="field_loadNuber"
+                        [(ngModel)]="booking.loadNuber" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_shipmentNumber">Shipment Number</label>
+                    <input type="text" class="form-control" name="shipmentNumber" id="field_shipmentNumber"
+                        [(ngModel)]="booking.shipmentNumber" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bol">Bol</label>
+                    <input type="text" class="form-control" name="bol" id="field_bol"
+                        [(ngModel)]="booking.bol" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <select class="form-control" name="status" [(ngModel)]="booking.status" id="field_status" >
+                        <option value="PICKEDUP">PICKEDUP</option>
+                        <option value="ONROAD">ONROAD</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_customer">Customer</label>
+                    <select class="form-control" id="field_customer" name="customer" [(ngModel)]="booking.customer" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="customerOption.id === booking.customer?.id ? booking.customer : customerOption" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.email}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
