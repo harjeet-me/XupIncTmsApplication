@@ -51,7 +51,8 @@ spring:
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
     data:
         jest:
-            uri: http://localhost:9200
+            uri: https://search-tmsxupinc-vnnq2fqcux5y4p7sfom4knkt2a.us-west-2.es.amazonaws.com
+            read-timeout: 30009099
     liquibase:
         contexts: prod
     mail:

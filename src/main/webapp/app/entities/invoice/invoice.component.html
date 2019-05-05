@@ -7,6 +7,7 @@
             Create new Invoice
             </span>
         </button>
+        
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
@@ -40,7 +41,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let invoice of invoices ;trackBy: trackId">
-                <td><a [routerLink]="['/invoice', invoice.id, 'view' ]">{{invoice.id}}</a></td>
+                <td><a [routerLink]="['/invoice', invoice.id, 'pview' ]">{{invoice.id}}</a></td>
                 <td>{{invoice.bookingNo}}</td>
                 <td>{{invoice.invoiceTotal}}</td>
                 <td>{{invoice.invoiceDueDate | date:'medium'}}</td>

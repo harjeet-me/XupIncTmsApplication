@@ -73,6 +73,18 @@ export const invoiceRoute: Routes = [
             pageTitle: 'Invoices'
         },
         canActivate: [UserRouteAccessService]
+    },
+    {
+        path: ':id/pview',
+        component: InvoiceDetailComponent,
+        resolve: {
+            invoice: InvoiceResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Invoices'
+        },
+        canActivate: [UserRouteAccessService]
     }
 ];
 

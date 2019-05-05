@@ -69,6 +69,10 @@ spring:
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: #spring.profiles.active#
+    data:
+        jest:
+            uri: https://search-tmsxupinc-vnnq2fqcux5y4p7sfom4knkt2a.us-west-2.es.amazonaws.com
+            read-timeout: 30009099
     jpa:
         open-in-view: false
         properties:
