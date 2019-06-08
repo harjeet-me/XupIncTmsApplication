@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(VendorService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Vendor(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0, 'AAAAAAA', 0, 'AAAAAAA');
+            elemDefault = new Vendor(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA', 0, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -58,7 +58,6 @@ describe('Service Tests', () => {
                         company: 'BBBBBB',
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
-                        dot: 1,
                         mc: 1,
                         email: 'BBBBBB',
                         phoneNumber: 1,
@@ -82,7 +81,6 @@ describe('Service Tests', () => {
                         company: 'BBBBBB',
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
-                        dot: 1,
                         mc: 1,
                         email: 'BBBBBB',
                         phoneNumber: 1,

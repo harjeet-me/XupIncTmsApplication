@@ -1,5 +1,7 @@
 {
-    "name": "Vendor",
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
     "fields": [
         {
             "fieldName": "company",
@@ -12,10 +14,6 @@
         {
             "fieldName": "lastName",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "dot",
-            "fieldType": "Long"
         },
         {
             "fieldName": "mc",
@@ -34,14 +32,12 @@
             "fieldType": "String"
         }
     ],
-    "relationships": [],
     "changelogDate": "20190408214412",
-    "entityTableName": "vendor",
     "dto": "no",
-    "pagination": "no",
+    "searchEngine": "elasticsearch",
     "service": "serviceImpl",
+    "entityTableName": "vendor",
+    "databaseType": "sql",
     "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "clientRootFolder": "",
-    "applications": "*"
+    "pagination": "no"
 }

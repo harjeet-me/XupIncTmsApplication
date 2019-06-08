@@ -34,10 +34,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="dot" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="mc" type="bigint">
                 <constraints nullable="true" />
             </column>

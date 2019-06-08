@@ -54,9 +54,6 @@ public class VendorResourceIntTest {
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_DOT = 1L;
-    private static final Long UPDATED_DOT = 2L;
-
     private static final Long DEFAULT_MC = 1L;
     private static final Long UPDATED_MC = 2L;
 
@@ -125,7 +122,6 @@ public class VendorResourceIntTest {
             .company(DEFAULT_COMPANY)
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
-            .dot(DEFAULT_DOT)
             .mc(DEFAULT_MC)
             .email(DEFAULT_EMAIL)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
@@ -156,7 +152,6 @@ public class VendorResourceIntTest {
         assertThat(testVendor.getCompany()).isEqualTo(DEFAULT_COMPANY);
         assertThat(testVendor.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testVendor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testVendor.getDot()).isEqualTo(DEFAULT_DOT);
         assertThat(testVendor.getMc()).isEqualTo(DEFAULT_MC);
         assertThat(testVendor.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testVendor.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
@@ -202,7 +197,6 @@ public class VendorResourceIntTest {
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY.toString())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
-            .andExpect(jsonPath("$.[*].dot").value(hasItem(DEFAULT_DOT.intValue())))
             .andExpect(jsonPath("$.[*].mc").value(hasItem(DEFAULT_MC.intValue())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.intValue())))
@@ -223,7 +217,6 @@ public class VendorResourceIntTest {
             .andExpect(jsonPath("$.company").value(DEFAULT_COMPANY.toString()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
-            .andExpect(jsonPath("$.dot").value(DEFAULT_DOT.intValue()))
             .andExpect(jsonPath("$.mc").value(DEFAULT_MC.intValue()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.intValue()))
@@ -256,7 +249,6 @@ public class VendorResourceIntTest {
             .company(UPDATED_COMPANY)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .dot(UPDATED_DOT)
             .mc(UPDATED_MC)
             .email(UPDATED_EMAIL)
             .phoneNumber(UPDATED_PHONE_NUMBER)
@@ -274,7 +266,6 @@ public class VendorResourceIntTest {
         assertThat(testVendor.getCompany()).isEqualTo(UPDATED_COMPANY);
         assertThat(testVendor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testVendor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testVendor.getDot()).isEqualTo(UPDATED_DOT);
         assertThat(testVendor.getMc()).isEqualTo(UPDATED_MC);
         assertThat(testVendor.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testVendor.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
@@ -341,7 +332,6 @@ public class VendorResourceIntTest {
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].dot").value(hasItem(DEFAULT_DOT.intValue())))
             .andExpect(jsonPath("$.[*].mc").value(hasItem(DEFAULT_MC.intValue())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.intValue())))
