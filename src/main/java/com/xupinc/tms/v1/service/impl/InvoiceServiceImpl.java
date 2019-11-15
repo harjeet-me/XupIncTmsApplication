@@ -1,21 +1,23 @@
 package com.xupinc.tms.v1.service.impl;
 
-import com.xupinc.tms.v1.service.InvoiceService;
-import com.xupinc.tms.v1.domain.Invoice;
-import com.xupinc.tms.v1.repository.InvoiceRepository;
-import com.xupinc.tms.v1.repository.search.InvoiceSearchRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.xupinc.tms.v1.domain.Invoice;
+import com.xupinc.tms.v1.reports.EmployeeReportService;
+import com.xupinc.tms.v1.repository.InvoiceRepository;
+import com.xupinc.tms.v1.repository.search.InvoiceSearchRepository;
+import com.xupinc.tms.v1.service.InvoiceService;
 
 /**
  * Service Implementation for managing Invoice.
@@ -101,4 +103,14 @@ public class InvoiceServiceImpl implements InvoiceService {
             .stream(invoiceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+    
+    @Bean
+	public String generateReport(final EmployeeReportService employeeReportService) {
+
+		String msg = employeeReportService.generateReport();
+
+		System.out.println(msg);
+
+		return msg;
+	}
 }
