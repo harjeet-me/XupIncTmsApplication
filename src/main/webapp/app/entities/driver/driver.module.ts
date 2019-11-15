@@ -1,23 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    DriverComponent,
-    DriverDetailComponent,
-    DriverUpdateComponent,
-    DriverDeletePopupComponent,
-    DriverDeleteDialogComponent,
-    driverRoute,
-    driverPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { DriverComponent } from './driver.component';
+import { DriverDetailComponent } from './driver-detail.component';
+import { DriverUpdateComponent } from './driver-update.component';
+import { DriverDeletePopupComponent, DriverDeleteDialogComponent } from './driver-delete-dialog.component';
+import { driverRoute, driverPopupRoute } from './driver.route';
 
 const ENTITY_STATES = [...driverRoute, ...driverPopupRoute];
 
 @NgModule({
     imports: [XupIncTmsApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [DriverComponent, DriverDetailComponent, DriverUpdateComponent, DriverDeleteDialogComponent, DriverDeletePopupComponent],
-    entryComponents: [DriverComponent, DriverUpdateComponent, DriverDeleteDialogComponent, DriverDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [DriverDeleteDialogComponent]
 })
 export class XupIncTmsApplicationDriverModule {}

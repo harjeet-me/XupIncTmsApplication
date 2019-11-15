@@ -58,18 +58,6 @@
                 <dd>
                     <span>{{bookingItem.recievedBy}}</span>
                 </dd>
-                <dt><span>Equipment</span></dt>
-                <dd>
-                    <div *ngIf="bookingItem.equipment">
-                        <a [routerLink]="['/equipment', bookingItem.equipment?.id, 'view']">{{bookingItem.equipment?.number}}</a>
-                    </div>
-                </dd>
-                <dt><span>Driver</span></dt>
-                <dd>
-                    <div *ngIf="bookingItem.driver">
-                        <a [routerLink]="['/driver', bookingItem.driver?.id, 'view']">{{bookingItem.driver?.firstName}}</a>
-                    </div>
-                </dd>
                 <dt><span>Main Booking</span></dt>
                 <dd>
                     <div *ngIf="bookingItem.mainBooking">

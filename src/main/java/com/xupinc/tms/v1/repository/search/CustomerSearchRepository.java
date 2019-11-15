@@ -1,10 +1,9 @@
 package com.xupinc.tms.v1.repository.search;
-
 import com.xupinc.tms.v1.domain.Customer;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the Customer entity.
+ * Spring Data Elasticsearch repository for the {@link Customer} entity.
  */
 public interface CustomerSearchRepository extends ElasticsearchRepository<Customer, Long> {
 }

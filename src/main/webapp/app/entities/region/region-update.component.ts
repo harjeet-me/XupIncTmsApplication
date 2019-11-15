@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { IRegion } from 'app/shared/model/region.model';
+import { IRegion, Region } from 'app/shared/model/region.model';
 import { RegionService } from './region.service';
 
 @Component({
@@ -11,15 +13,26 @@ import { RegionService } from './region.service';
     templateUrl: './region-update.component.html'
 })
 export class RegionUpdateComponent implements OnInit {
-    region: IRegion;
     isSaving: boolean;
 
-    constructor(protected regionService: RegionService, protected activatedRoute: ActivatedRoute) {}
+    editForm = this.fb.group({
+        id: [],
+        regionName: []
+    });
+
+    constructor(protected regionService: RegionService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ region }) => {
-            this.region = region;
+            this.updateForm(region);
+        });
+    }
+
+    updateForm(region: IRegion) {
+        this.editForm.patchValue({
+            id: region.id,
+            regionName: region.regionName
         });
     }
 
@@ -29,15 +42,24 @@ export class RegionUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.region.id !== undefined) {
-            this.subscribeToSaveResponse(this.regionService.update(this.region));
+        const region = this.createFromForm();
+        if (region.id !== undefined) {
+            this.subscribeToSaveResponse(this.regionService.update(region));
         } else {
-            this.subscribeToSaveResponse(this.regionService.create(this.region));
+            this.subscribeToSaveResponse(this.regionService.create(region));
         }
     }
 
+    private createFromForm(): IRegion {
+        return {
+            ...new Region(),
+            id: this.editForm.get(['id']).value,
+            regionName: this.editForm.get(['regionName']).value
+        };
+    }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IRegion>>) {
-        result.subscribe((res: HttpResponse<IRegion>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
 
     protected onSaveSuccess() {

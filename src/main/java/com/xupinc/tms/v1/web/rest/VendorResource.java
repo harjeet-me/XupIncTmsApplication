@@ -1,11 +1,14 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Vendor;
 import com.xupinc.tms.v1.service.VendorService;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +22,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Vendor.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Vendor}.
  */
 @RestController
 @RequestMapping("/api")
@@ -29,6 +32,9 @@ public class VendorResource {
 
     private static final String ENTITY_NAME = "vendor";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final VendorService vendorService;
 
     public VendorResource(VendorService vendorService) {
@@ -36,11 +42,11 @@ public class VendorResource {
     }
 
     /**
-     * POST  /vendors : Create a new vendor.
+     * {@code POST  /vendors} : Create a new vendor.
      *
-     * @param vendor the vendor to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new vendor, or with status 400 (Bad Request) if the vendor has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param vendor the vendor to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vendor, or with status {@code 400 (Bad Request)} if the vendor has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/vendors")
     public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor) throws URISyntaxException {
@@ -50,18 +56,18 @@ public class VendorResource {
         }
         Vendor result = vendorService.save(vendor);
         return ResponseEntity.created(new URI("/api/vendors/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /vendors : Updates an existing vendor.
+     * {@code PUT  /vendors} : Updates an existing vendor.
      *
-     * @param vendor the vendor to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated vendor,
-     * or with status 400 (Bad Request) if the vendor is not valid,
-     * or with status 500 (Internal Server Error) if the vendor couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param vendor the vendor to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vendor,
+     * or with status {@code 400 (Bad Request)} if the vendor is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the vendor couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/vendors")
     public ResponseEntity<Vendor> updateVendor(@RequestBody Vendor vendor) throws URISyntaxException {
@@ -71,14 +77,15 @@ public class VendorResource {
         }
         Vendor result = vendorService.save(vendor);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vendor.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, vendor.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /vendors : get all the vendors.
+     * {@code GET  /vendors} : get all the vendors.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of vendors in body
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vendors in body.
      */
     @GetMapping("/vendors")
     public List<Vendor> getAllVendors() {
@@ -87,10 +94,10 @@ public class VendorResource {
     }
 
     /**
-     * GET  /vendors/:id : get the "id" vendor.
+     * {@code GET  /vendors/:id} : get the "id" vendor.
      *
-     * @param id the id of the vendor to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the vendor, or with status 404 (Not Found)
+     * @param id the id of the vendor to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vendor, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/vendors/{id}")
     public ResponseEntity<Vendor> getVendor(@PathVariable Long id) {
@@ -100,29 +107,28 @@ public class VendorResource {
     }
 
     /**
-     * DELETE  /vendors/:id : delete the "id" vendor.
+     * {@code DELETE  /vendors/:id} : delete the "id" vendor.
      *
-     * @param id the id of the vendor to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the vendor to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/vendors/{id}")
     public ResponseEntity<Void> deleteVendor(@PathVariable Long id) {
         log.debug("REST request to delete Vendor : {}", id);
         vendorService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/vendors?query=:query : search for the vendor corresponding
+     * {@code SEARCH  /_search/vendors?query=:query} : search for the vendor corresponding
      * to the query.
      *
-     * @param query the query of the vendor search
-     * @return the result of the search
+     * @param query the query of the vendor search.
+     * @return the result of the search.
      */
     @GetMapping("/_search/vendors")
     public List<Vendor> searchVendors(@RequestParam String query) {
         log.debug("REST request to search Vendors for query {}", query);
         return vendorService.search(query);
     }
-
 }

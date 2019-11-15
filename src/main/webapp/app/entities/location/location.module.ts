@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    LocationComponent,
-    LocationDetailComponent,
-    LocationUpdateComponent,
-    LocationDeletePopupComponent,
-    LocationDeleteDialogComponent,
-    locationRoute,
-    locationPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { LocationComponent } from './location.component';
+import { LocationDetailComponent } from './location-detail.component';
+import { LocationUpdateComponent } from './location-update.component';
+import { LocationDeletePopupComponent, LocationDeleteDialogComponent } from './location-delete-dialog.component';
+import { locationRoute, locationPopupRoute } from './location.route';
 
 const ENTITY_STATES = [...locationRoute, ...locationPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...locationRoute, ...locationPopupRoute];
         LocationDeleteDialogComponent,
         LocationDeletePopupComponent
     ],
-    entryComponents: [LocationComponent, LocationUpdateComponent, LocationDeleteDialogComponent, LocationDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [LocationDeleteDialogComponent]
 })
 export class XupIncTmsApplicationLocationModule {}

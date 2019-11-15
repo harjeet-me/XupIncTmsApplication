@@ -1,17 +1,14 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Job.
@@ -19,13 +16,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "job")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "job")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "job")
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "job_title")
@@ -37,16 +35,16 @@ public class Job implements Serializable {
     @Column(name = "max_salary")
     private Long maxSalary;
 
-    @ManyToOne
-    @JsonIgnoreProperties("jobs")
-    private Employee employee;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "job_task",
                joinColumns = @JoinColumn(name = "job_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
     private Set<Task> tasks = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("jobs")
+    private Employee employee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -96,19 +94,6 @@ public class Job implements Serializable {
         this.maxSalary = maxSalary;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public Job employee(Employee employee) {
-        this.employee = employee;
-        return this;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public Set<Task> getTasks() {
         return tasks;
     }
@@ -133,6 +118,19 @@ public class Job implements Serializable {
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Job employee(Employee employee) {
+        this.employee = employee;
+        return this;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -140,19 +138,15 @@ public class Job implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Job)) {
             return false;
         }
-        Job job = (Job) o;
-        if (job.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), job.getId());
+        return id != null && id.equals(((Job) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

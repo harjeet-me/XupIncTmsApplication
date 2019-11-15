@@ -1,22 +1,22 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-equipment-heading">Create or edit a Equipment</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!equipment.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="equipment.id" readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_number">Number</label>
                     <input type="text" class="form-control" name="number" id="field_number"
-                        [(ngModel)]="equipment.number" />
+                           formControlName="number"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_type">Type</label>
-                    <select class="form-control" name="type" [(ngModel)]="equipment.type" id="field_type" >
+                    <select class="form-control" name="type" formControlName="type" id="field_type">
                         <option value="TRAILER">TRAILER</option>
                         <option value="CONTAINER">CONTAINER</option>
                         <option value="CHASIS">CHASIS</option>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_size">Size</label>
-                    <select class="form-control" name="size" [(ngModel)]="equipment.size" id="field_size" >
+                    <select class="form-control" name="size" formControlName="size" id="field_size">
                         <option value="FIFTYTHREE">FIFTYTHREE</option>
                         <option value="FORTYTHREE">FORTYTHREE</option>
                     </select>
@@ -32,15 +32,22 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_insurance">Insurance</label>
                     <input type="text" class="form-control" name="insurance" id="field_insurance"
-                        [(ngModel)]="equipment.insurance" />
+                           formControlName="insurance"/>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bookingItem">Booking Item</label>
+                    <select class="form-control" id="field_bookingItem" name="bookingItem" formControlName="bookingItem">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="bookingItemOption.id === editForm.get('bookingItem').value?.id ? editForm.get('bookingItem').value : bookingItemOption" *ngFor="let bookingItemOption of bookingitems; trackBy: trackBookingItemById">{{bookingItemOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>

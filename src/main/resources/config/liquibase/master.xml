@@ -34,5 +34,7 @@
     <include file="config/liquibase/changelog/20190408214420_added_entity_constraints_Employee.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190408214421_added_entity_constraints_Job.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190408214422_added_entity_constraints_JobHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190408214410_added_entity_constraints_Equipment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190408214414_added_entity_constraints_Driver.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

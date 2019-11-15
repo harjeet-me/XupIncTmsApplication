@@ -1,16 +1,13 @@
 package com.xupinc.tms.v1.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
-import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
+import com.xupinc.tms.v1.domain.enumeration.InvoiceStatus;
 
 /**
  * A InvoiceItem.
@@ -18,21 +15,31 @@ import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 @Entity
 @Table(name = "invoice_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "invoiceitem")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "invoiceitem")
 public class InvoiceItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "qty")
+    private Integer qty;
+
+    @Column(name = "price")
+    private Integer price;
+
+    @Column(name = "total")
+    private Integer total;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusEnum status;
+    private InvoiceStatus status;
 
     @Column(name = "shipment_number")
     private String shipmentNumber;
@@ -49,29 +56,68 @@ public class InvoiceItem implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public InvoiceItem name(String name) {
-        this.name = name;
+    public InvoiceItem description(String description) {
+        this.description = description;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public StatusEnum getStatus() {
+    public Integer getQty() {
+        return qty;
+    }
+
+    public InvoiceItem qty(Integer qty) {
+        this.qty = qty;
+        return this;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public InvoiceItem price(Integer price) {
+        this.price = price;
+        return this;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public InvoiceItem total(Integer total) {
+        this.total = total;
+        return this;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public InvoiceStatus getStatus() {
         return status;
     }
 
-    public InvoiceItem status(StatusEnum status) {
+    public InvoiceItem status(InvoiceStatus status) {
         this.status = status;
         return this;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(InvoiceStatus status) {
         this.status = status;
     }
 
@@ -107,26 +153,25 @@ public class InvoiceItem implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof InvoiceItem)) {
             return false;
         }
-        InvoiceItem invoiceItem = (InvoiceItem) o;
-        if (invoiceItem.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), invoiceItem.getId());
+        return id != null && id.equals(((InvoiceItem) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
     public String toString() {
         return "InvoiceItem{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", qty=" + getQty() +
+            ", price=" + getPrice() +
+            ", total=" + getTotal() +
             ", status='" + getStatus() + "'" +
             ", shipmentNumber='" + getShipmentNumber() + "'" +
             ", bol='" + getBol() + "'" +

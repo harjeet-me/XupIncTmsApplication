@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Contact.
+ * Service Implementation for managing {@link Contact}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class ContactServiceImpl implements ContactService {
     /**
      * Save a contact.
      *
-     * @param contact the entity to save
-     * @return the persisted entity
+     * @param contact the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Contact save(Contact contact) {
@@ -52,7 +52,7 @@ public class ContactServiceImpl implements ContactService {
     /**
      * Get all the contacts.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -64,8 +64,8 @@ public class ContactServiceImpl implements ContactService {
 
 
     /**
-     *  get all the contacts where Customer is null.
-     *  @return the list of entities
+    *  Get all the contacts where Customer is {@code null}.
+     *  @return the list of entities.
      */
     @Transactional(readOnly = true) 
     public List<Contact> findAllWhereCustomerIsNull() {
@@ -79,8 +79,8 @@ public class ContactServiceImpl implements ContactService {
     /**
      * Get one contact by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -92,7 +92,7 @@ public class ContactServiceImpl implements ContactService {
     /**
      * Delete the contact by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -104,8 +104,8 @@ public class ContactServiceImpl implements ContactService {
     /**
      * Search for the contact corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

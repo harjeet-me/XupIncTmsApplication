@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-department" [routerLink]="['/department/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Department
+            Create a new Department
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,14 +26,17 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="departments">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="departments?.length === 0">
+        <span>No departments found</span>
+    </div>
+    <div class="table-responsive" *ngIf="departments?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Department Name</span></th>
-            <th><span>Location</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Department Name</span></th>
+            <th scope="col" ><span>Location</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -41,11 +45,11 @@
                 <td>{{department.departmentName}}</td>
                 <td>
                     <div *ngIf="department.location">
-                        <a [routerLink]="['../location', department.location?.id, 'view' ]" >{{department.location?.id}}</a>
+                        <a [routerLink]="['/location', department.location?.id, 'view' ]" >{{department.location?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/department', department.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -59,7 +63,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'department', { outlets: { popup: department.id + '/delete'} }]"
+                                [routerLink]="['/department', { outlets: { popup: department.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

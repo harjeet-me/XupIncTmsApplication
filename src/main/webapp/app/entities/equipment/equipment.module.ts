@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    EquipmentComponent,
-    EquipmentDetailComponent,
-    EquipmentUpdateComponent,
-    EquipmentDeletePopupComponent,
-    EquipmentDeleteDialogComponent,
-    equipmentRoute,
-    equipmentPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { EquipmentComponent } from './equipment.component';
+import { EquipmentDetailComponent } from './equipment-detail.component';
+import { EquipmentUpdateComponent } from './equipment-update.component';
+import { EquipmentDeletePopupComponent, EquipmentDeleteDialogComponent } from './equipment-delete-dialog.component';
+import { equipmentRoute, equipmentPopupRoute } from './equipment.route';
 
 const ENTITY_STATES = [...equipmentRoute, ...equipmentPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...equipmentRoute, ...equipmentPopupRoute];
         EquipmentDeleteDialogComponent,
         EquipmentDeletePopupComponent
     ],
-    entryComponents: [EquipmentComponent, EquipmentUpdateComponent, EquipmentDeleteDialogComponent, EquipmentDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [EquipmentDeleteDialogComponent]
 })
 export class XupIncTmsApplicationEquipmentModule {}

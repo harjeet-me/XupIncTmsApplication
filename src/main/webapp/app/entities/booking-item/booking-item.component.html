@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-booking-item" [routerLink]="['/booking-item/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Booking Item
+            Create a new Booking Item
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,27 +26,28 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="bookingItems">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="bookingItems?.length === 0">
+        <span>No bookingItems found</span>
+    </div>
+    <div class="table-responsive" *ngIf="bookingItems?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Description</span></th>
-            <th><span>Pickup</span></th>
-            <th><span>Drop</span></th>
-            <th><span>Source</span></th>
-            <th><span>Destination</span></th>
-            <th><span>Current Location</span></th>
-            <th><span>Status</span></th>
-            <th><span>Detention</span></th>
-            <th><span>Chasis In Time</span></th>
-            <th><span>Pod</span></th>
-            <th><span>Hazmat</span></th>
-            <th><span>Recieved By</span></th>
-            <th><span>Equipment</span></th>
-            <th><span>Driver</span></th>
-            <th><span>Main Booking</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Description</span></th>
+            <th scope="col" ><span>Pickup</span></th>
+            <th scope="col" ><span>Drop</span></th>
+            <th scope="col" ><span>Source</span></th>
+            <th scope="col" ><span>Destination</span></th>
+            <th scope="col" ><span>Current Location</span></th>
+            <th scope="col" ><span>Status</span></th>
+            <th scope="col" ><span>Detention</span></th>
+            <th scope="col" ><span>Chasis In Time</span></th>
+            <th scope="col" ><span>Pod</span></th>
+            <th scope="col" ><span>Hazmat</span></th>
+            <th scope="col" ><span>Recieved By</span></th>
+            <th scope="col" ><span>Main Booking</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -69,22 +71,12 @@
                 <td>{{bookingItem.hazmat}}</td>
                 <td>{{bookingItem.recievedBy}}</td>
                 <td>
-                    <div *ngIf="bookingItem.equipment">
-                        <a [routerLink]="['../equipment', bookingItem.equipment?.id, 'view' ]" >{{bookingItem.equipment?.number}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="bookingItem.driver">
-                        <a [routerLink]="['../driver', bookingItem.driver?.id, 'view' ]" >{{bookingItem.driver?.firstName}}</a>
-                    </div>
-                </td>
-                <td>
                     <div *ngIf="bookingItem.mainBooking">
-                        <a [routerLink]="['../booking', bookingItem.mainBooking?.id, 'view' ]" >{{bookingItem.mainBooking?.name}}</a>
+                        <a [routerLink]="['/booking', bookingItem.mainBooking?.id, 'view' ]" >{{bookingItem.mainBooking?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/booking-item', bookingItem.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -98,7 +90,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'booking-item', { outlets: { popup: bookingItem.id + '/delete'} }]"
+                                [routerLink]="['/booking-item', { outlets: { popup: bookingItem.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

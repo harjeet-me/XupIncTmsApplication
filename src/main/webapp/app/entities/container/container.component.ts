@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { IContainer } from 'app/shared/model/container.model';
-import { AccountService } from 'app/core';
 import { ContainerService } from './container.service';
 
 @Component({
@@ -15,20 +13,17 @@ import { ContainerService } from './container.service';
 })
 export class ContainerComponent implements OnInit, OnDestroy {
     containers: IContainer[];
-    currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
 
     constructor(
         protected containerService: ContainerService,
-        protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
-        protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
+        protected activatedRoute: ActivatedRoute
     ) {
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+                ? this.activatedRoute.snapshot.queryParams['search']
                 : '';
     }
 
@@ -38,26 +33,13 @@ export class ContainerComponent implements OnInit, OnDestroy {
                 .search({
                     query: this.currentSearch
                 })
-                .pipe(
-                    filter((res: HttpResponse<IContainer[]>) => res.ok),
-                    map((res: HttpResponse<IContainer[]>) => res.body)
-                )
-                .subscribe((res: IContainer[]) => (this.containers = res), (res: HttpErrorResponse) => this.onError(res.message));
+                .subscribe((res: HttpResponse<IContainer[]>) => (this.containers = res.body));
             return;
         }
-        this.containerService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IContainer[]>) => res.ok),
-                map((res: HttpResponse<IContainer[]>) => res.body)
-            )
-            .subscribe(
-                (res: IContainer[]) => {
-                    this.containers = res;
-                    this.currentSearch = '';
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.containerService.query().subscribe((res: HttpResponse<IContainer[]>) => {
+            this.containers = res.body;
+            this.currentSearch = '';
+        });
     }
 
     search(query) {
@@ -75,9 +57,6 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.accountService.identity().then(account => {
-            this.currentAccount = account;
-        });
         this.registerChangeInContainers();
     }
 
@@ -90,10 +69,6 @@ export class ContainerComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInContainers() {
-        this.eventSubscriber = this.eventManager.subscribe('containerListModification', response => this.loadAll());
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
+        this.eventSubscriber = this.eventManager.subscribe('containerListModification', () => this.loadAll());
     }
 }

@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-employee" [routerLink]="['/employee/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Employee
+            Create a new Employee
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,21 +26,24 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="employees">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="employees?.length === 0">
+        <span>No employees found</span>
+    </div>
+    <div class="table-responsive" *ngIf="employees?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="firstName"><span>First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="lastName"><span>Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="phoneNumber"><span>Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="hireDate"><span>Hire Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="salary"><span>Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="commissionPct"><span>Commission Pct</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="department.id"><span>Department</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="manager.id"><span>Manager</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
+            <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="firstName"><span>First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="lastName"><span>Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="phoneNumber"><span>Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="hireDate"><span>Hire Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="salary"><span>Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="commissionPct"><span>Commission Pct</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="manager.id"><span>Manager</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="department.id"><span>Department</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
@@ -53,17 +57,17 @@
                 <td>{{employee.salary}}</td>
                 <td>{{employee.commissionPct}}</td>
                 <td>
-                    <div *ngIf="employee.department">
-                        <a [routerLink]="['../department', employee.department?.id, 'view' ]" >{{employee.department?.id}}</a>
+                    <div *ngIf="employee.manager">
+                        <a [routerLink]="['/employee', employee.manager?.id, 'view' ]" >{{employee.manager?.id}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="employee.manager">
-                        <a [routerLink]="['../employee', employee.manager?.id, 'view' ]" >{{employee.manager?.id}}</a>
+                    <div *ngIf="employee.department">
+                        <a [routerLink]="['/department', employee.department?.id, 'view' ]" >{{employee.department?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/employee', employee.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -77,7 +81,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'employee', { outlets: { popup: employee.id + '/delete'} }]"
+                                [routerLink]="['/employee', { outlets: { popup: employee.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

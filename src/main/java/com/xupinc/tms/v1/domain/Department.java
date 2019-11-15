@@ -1,7 +1,4 @@
 package com.xupinc.tms.v1.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -9,11 +6,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Department.
@@ -21,20 +17,22 @@ import java.util.Objects;
 @Entity
 @Table(name = "department")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "department")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "department")
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @NotNull
     @Column(name = "department_name", nullable = false)
     private String departmentName;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Location location;
 
@@ -45,6 +43,7 @@ public class Department implements Serializable {
     @OneToMany(mappedBy = "department")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employee> employees = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -111,19 +110,15 @@ public class Department implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Department)) {
             return false;
         }
-        Department department = (Department) o;
-        if (department.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), department.getId());
+        return id != null && id.equals(((Department) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

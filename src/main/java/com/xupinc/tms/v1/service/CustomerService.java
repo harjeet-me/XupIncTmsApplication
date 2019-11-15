@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing Customer.
+ * Service Interface for managing {@link Customer}.
  */
 public interface CustomerService {
 
     /**
      * Save a customer.
      *
-     * @param customer the entity to save
-     * @return the persisted entity
+     * @param customer the entity to save.
+     * @return the persisted entity.
      */
     Customer save(Customer customer);
 
     /**
      * Get all the customers.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     List<Customer> findAll();
 
@@ -29,24 +29,24 @@ public interface CustomerService {
     /**
      * Get the "id" customer.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     Optional<Customer> findOne(Long id);
 
     /**
      * Delete the "id" customer.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     void delete(Long id);
 
     /**
      * Search for the customer corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query the query of the search.
      * 
-     * @return the list of entities
+     * @return the list of entities.
      */
     List<Customer> search(String query);
 }

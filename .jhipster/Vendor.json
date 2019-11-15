@@ -39,5 +39,9 @@
     "entityTableName": "vendor",
     "databaseType": "sql",
     "jpaMetamodelFiltering": false,
-    "pagination": "no"
+
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "readOnly": false
 }

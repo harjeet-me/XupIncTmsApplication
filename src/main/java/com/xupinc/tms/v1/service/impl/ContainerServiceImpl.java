@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Container.
+ * Service Implementation for managing {@link Container}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class ContainerServiceImpl implements ContainerService {
     /**
      * Save a container.
      *
-     * @param container the entity to save
-     * @return the persisted entity
+     * @param container the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Container save(Container container) {
@@ -52,7 +52,7 @@ public class ContainerServiceImpl implements ContainerService {
     /**
      * Get all the containers.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class ContainerServiceImpl implements ContainerService {
     /**
      * Get one container by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class ContainerServiceImpl implements ContainerService {
     /**
      * Delete the container by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class ContainerServiceImpl implements ContainerService {
     /**
      * Search for the container corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

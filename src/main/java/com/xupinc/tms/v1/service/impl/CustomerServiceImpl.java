@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Customer.
+ * Service Implementation for managing {@link Customer}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Save a customer.
      *
-     * @param customer the entity to save
-     * @return the persisted entity
+     * @param customer the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Customer save(Customer customer) {
@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Get all the customers.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Get one customer by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Delete the customer by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Search for the customer corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

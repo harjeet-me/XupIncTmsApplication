@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    CountryComponent,
-    CountryDetailComponent,
-    CountryUpdateComponent,
-    CountryDeletePopupComponent,
-    CountryDeleteDialogComponent,
-    countryRoute,
-    countryPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { CountryComponent } from './country.component';
+import { CountryDetailComponent } from './country-detail.component';
+import { CountryUpdateComponent } from './country-update.component';
+import { CountryDeletePopupComponent, CountryDeleteDialogComponent } from './country-delete-dialog.component';
+import { countryRoute, countryPopupRoute } from './country.route';
 
 const ENTITY_STATES = [...countryRoute, ...countryPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...countryRoute, ...countryPopupRoute];
         CountryDeleteDialogComponent,
         CountryDeletePopupComponent
     ],
-    entryComponents: [CountryComponent, CountryUpdateComponent, CountryDeleteDialogComponent, CountryDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [CountryDeleteDialogComponent]
 })
 export class XupIncTmsApplicationCountryModule {}

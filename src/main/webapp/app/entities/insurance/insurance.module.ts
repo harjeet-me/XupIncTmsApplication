@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    InsuranceComponent,
-    InsuranceDetailComponent,
-    InsuranceUpdateComponent,
-    InsuranceDeletePopupComponent,
-    InsuranceDeleteDialogComponent,
-    insuranceRoute,
-    insurancePopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { InsuranceComponent } from './insurance.component';
+import { InsuranceDetailComponent } from './insurance-detail.component';
+import { InsuranceUpdateComponent } from './insurance-update.component';
+import { InsuranceDeletePopupComponent, InsuranceDeleteDialogComponent } from './insurance-delete-dialog.component';
+import { insuranceRoute, insurancePopupRoute } from './insurance.route';
 
 const ENTITY_STATES = [...insuranceRoute, ...insurancePopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...insuranceRoute, ...insurancePopupRoute];
         InsuranceDeleteDialogComponent,
         InsuranceDeletePopupComponent
     ],
-    entryComponents: [InsuranceComponent, InsuranceUpdateComponent, InsuranceDeleteDialogComponent, InsuranceDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [InsuranceDeleteDialogComponent]
 })
 export class XupIncTmsApplicationInsuranceModule {}

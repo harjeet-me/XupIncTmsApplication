@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Equipment.
+ * Service Implementation for managing {@link Equipment}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     /**
      * Save a equipment.
      *
-     * @param equipment the entity to save
-     * @return the persisted entity
+     * @param equipment the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Equipment save(Equipment equipment) {
@@ -52,7 +52,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     /**
      * Get all the equipment.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     /**
      * Get one equipment by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     /**
      * Delete the equipment by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     /**
      * Search for the equipment corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

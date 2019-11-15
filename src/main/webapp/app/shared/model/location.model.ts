@@ -1,10 +1,5 @@
 import { ICustomer } from 'app/shared/model/customer.model';
-
-export const enum CountryEnum {
-    USA = 'USA',
-    CANADA = 'CANADA',
-    MEXICO = 'MEXICO'
-}
+import { CountryEnum } from 'app/shared/model/enumerations/country-enum.model';
 
 export interface ILocation {
     id?: number;

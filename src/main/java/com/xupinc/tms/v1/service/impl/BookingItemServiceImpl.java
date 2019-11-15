@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing BookingItem.
+ * Service Implementation for managing {@link BookingItem}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class BookingItemServiceImpl implements BookingItemService {
     /**
      * Save a bookingItem.
      *
-     * @param bookingItem the entity to save
-     * @return the persisted entity
+     * @param bookingItem the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public BookingItem save(BookingItem bookingItem) {
@@ -52,7 +52,7 @@ public class BookingItemServiceImpl implements BookingItemService {
     /**
      * Get all the bookingItems.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class BookingItemServiceImpl implements BookingItemService {
     /**
      * Get one bookingItem by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class BookingItemServiceImpl implements BookingItemService {
     /**
      * Delete the bookingItem by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class BookingItemServiceImpl implements BookingItemService {
     /**
      * Search for the bookingItem corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

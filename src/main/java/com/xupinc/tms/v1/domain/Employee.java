@@ -1,7 +1,4 @@
 package com.xupinc.tms.v1.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,12 +7,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * The Employee entity.
@@ -24,13 +20,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "employee")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "employee")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "employee")
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
@@ -58,16 +55,21 @@ public class Employee implements Serializable {
     @Column(name = "commission_pct")
     private Long commissionPct;
 
-    @ManyToOne
-    @JsonIgnoreProperties("employees")
-    private Department department;
-
     @OneToMany(mappedBy = "employee")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Job> jobs = new HashSet<>();
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("employees")
     private Employee manager;
+
+    /**
+     * Another side of the same relationship
+     */
+    @ApiModelProperty(value = "Another side of the same relationship")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("employees")
+    private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -169,19 +171,6 @@ public class Employee implements Serializable {
         this.commissionPct = commissionPct;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public Employee department(Department department) {
-        this.department = department;
-        return this;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
     public Set<Job> getJobs() {
         return jobs;
     }
@@ -219,6 +208,19 @@ public class Employee implements Serializable {
     public void setManager(Employee employee) {
         this.manager = employee;
     }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Employee department(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -226,19 +228,15 @@ public class Employee implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Employee)) {
             return false;
         }
-        Employee employee = (Employee) o;
-        if (employee.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), employee.getId());
+        return id != null && id.equals(((Employee) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
