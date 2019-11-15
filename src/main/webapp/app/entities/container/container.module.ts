@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    ContainerComponent,
-    ContainerDetailComponent,
-    ContainerUpdateComponent,
-    ContainerDeletePopupComponent,
-    ContainerDeleteDialogComponent,
-    containerRoute,
-    containerPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { ContainerComponent } from './container.component';
+import { ContainerDetailComponent } from './container-detail.component';
+import { ContainerUpdateComponent } from './container-update.component';
+import { ContainerDeletePopupComponent, ContainerDeleteDialogComponent } from './container-delete-dialog.component';
+import { containerRoute, containerPopupRoute } from './container.route';
 
 const ENTITY_STATES = [...containerRoute, ...containerPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...containerRoute, ...containerPopupRoute];
         ContainerDeleteDialogComponent,
         ContainerDeletePopupComponent
     ],
-    entryComponents: [ContainerComponent, ContainerUpdateComponent, ContainerDeleteDialogComponent, ContainerDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [ContainerDeleteDialogComponent]
 })
 export class XupIncTmsApplicationContainerModule {}

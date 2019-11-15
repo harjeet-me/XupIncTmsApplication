@@ -32,10 +32,11 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-one",
             "otherEntityName": "bookingItem",
             "otherEntityRelationshipName": "driver",
-            "relationshipName": "bookingItem"
+            "relationshipName": "bookingItem",
+            "otherEntityField": "description"
         }
     ],
     "changelogDate": "20190408214414",
@@ -46,5 +47,6 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "readOnly": false
 }

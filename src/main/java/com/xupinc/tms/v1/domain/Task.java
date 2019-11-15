@@ -1,6 +1,4 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
@@ -8,27 +6,26 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
- * Task entity.
- * @author The JHipster team.
+ * Task entity.\n@author The JHipster team.
  */
-@ApiModel(description = "Task entity. @author The JHipster team.")
+@ApiModel(description = "Task entity.\n@author The JHipster team.")
 @Entity
 @Table(name = "task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "task")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "task")
 public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "title")
@@ -108,19 +105,15 @@ public class Task implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Task)) {
             return false;
         }
-        Task task = (Task) o;
-        if (task.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), task.getId());
+        return id != null && id.equals(((Task) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

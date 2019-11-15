@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { IDriver } from 'app/shared/model/driver.model';
-import { AccountService } from 'app/core';
 import { DriverService } from './driver.service';
 
 @Component({
@@ -15,20 +13,13 @@ import { DriverService } from './driver.service';
 })
 export class DriverComponent implements OnInit, OnDestroy {
     drivers: IDriver[];
-    currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
 
-    constructor(
-        protected driverService: DriverService,
-        protected jhiAlertService: JhiAlertService,
-        protected eventManager: JhiEventManager,
-        protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
-    ) {
+    constructor(protected driverService: DriverService, protected eventManager: JhiEventManager, protected activatedRoute: ActivatedRoute) {
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+                ? this.activatedRoute.snapshot.queryParams['search']
                 : '';
     }
 
@@ -38,26 +29,13 @@ export class DriverComponent implements OnInit, OnDestroy {
                 .search({
                     query: this.currentSearch
                 })
-                .pipe(
-                    filter((res: HttpResponse<IDriver[]>) => res.ok),
-                    map((res: HttpResponse<IDriver[]>) => res.body)
-                )
-                .subscribe((res: IDriver[]) => (this.drivers = res), (res: HttpErrorResponse) => this.onError(res.message));
+                .subscribe((res: HttpResponse<IDriver[]>) => (this.drivers = res.body));
             return;
         }
-        this.driverService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IDriver[]>) => res.ok),
-                map((res: HttpResponse<IDriver[]>) => res.body)
-            )
-            .subscribe(
-                (res: IDriver[]) => {
-                    this.drivers = res;
-                    this.currentSearch = '';
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.driverService.query().subscribe((res: HttpResponse<IDriver[]>) => {
+            this.drivers = res.body;
+            this.currentSearch = '';
+        });
     }
 
     search(query) {
@@ -75,9 +53,6 @@ export class DriverComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.accountService.identity().then(account => {
-            this.currentAccount = account;
-        });
         this.registerChangeInDrivers();
     }
 
@@ -90,10 +65,6 @@ export class DriverComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInDrivers() {
-        this.eventSubscriber = this.eventManager.subscribe('driverListModification', response => this.loadAll());
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
+        this.eventSubscriber = this.eventManager.subscribe('driverListModification', () => this.loadAll());
     }
 }

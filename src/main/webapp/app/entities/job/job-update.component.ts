@@ -1,55 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { IJob } from 'app/shared/model/job.model';
+import { IJob, Job } from 'app/shared/model/job.model';
 import { JobService } from './job.service';
-import { IEmployee } from 'app/shared/model/employee.model';
-import { EmployeeService } from 'app/entities/employee';
 import { ITask } from 'app/shared/model/task.model';
-import { TaskService } from 'app/entities/task';
+import { TaskService } from 'app/entities/task/task.service';
+import { IEmployee } from 'app/shared/model/employee.model';
+import { EmployeeService } from 'app/entities/employee/employee.service';
 
 @Component({
     selector: 'jhi-job-update',
     templateUrl: './job-update.component.html'
 })
 export class JobUpdateComponent implements OnInit {
-    job: IJob;
     isSaving: boolean;
+
+    tasks: ITask[];
 
     employees: IEmployee[];
 
-    tasks: ITask[];
+    editForm = this.fb.group({
+        id: [],
+        jobTitle: [],
+        minSalary: [],
+        maxSalary: [],
+        tasks: [],
+        employee: []
+    });
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected jobService: JobService,
-        protected employeeService: EmployeeService,
         protected taskService: TaskService,
-        protected activatedRoute: ActivatedRoute
+        protected employeeService: EmployeeService,
+        protected activatedRoute: ActivatedRoute,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ job }) => {
-            this.job = job;
+            this.updateForm(job);
         });
-        this.employeeService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<IEmployee[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IEmployee[]>) => response.body)
-            )
-            .subscribe((res: IEmployee[]) => (this.employees = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.taskService
             .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<ITask[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ITask[]>) => response.body)
-            )
-            .subscribe((res: ITask[]) => (this.tasks = res), (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<ITask[]>) => (this.tasks = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+        this.employeeService
+            .query()
+            .subscribe(
+                (res: HttpResponse<IEmployee[]>) => (this.employees = res.body),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    updateForm(job: IJob) {
+        this.editForm.patchValue({
+            id: job.id,
+            jobTitle: job.jobTitle,
+            minSalary: job.minSalary,
+            maxSalary: job.maxSalary,
+            tasks: job.tasks,
+            employee: job.employee
+        });
     }
 
     previousState() {
@@ -58,15 +75,28 @@ export class JobUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.job.id !== undefined) {
-            this.subscribeToSaveResponse(this.jobService.update(this.job));
+        const job = this.createFromForm();
+        if (job.id !== undefined) {
+            this.subscribeToSaveResponse(this.jobService.update(job));
         } else {
-            this.subscribeToSaveResponse(this.jobService.create(this.job));
+            this.subscribeToSaveResponse(this.jobService.create(job));
         }
     }
 
+    private createFromForm(): IJob {
+        return {
+            ...new Job(),
+            id: this.editForm.get(['id']).value,
+            jobTitle: this.editForm.get(['jobTitle']).value,
+            minSalary: this.editForm.get(['minSalary']).value,
+            maxSalary: this.editForm.get(['maxSalary']).value,
+            tasks: this.editForm.get(['tasks']).value,
+            employee: this.editForm.get(['employee']).value
+        };
+    }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IJob>>) {
-        result.subscribe((res: HttpResponse<IJob>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
 
     protected onSaveSuccess() {
@@ -77,20 +107,19 @@ export class JobUpdateComponent implements OnInit {
     protected onSaveError() {
         this.isSaving = false;
     }
-
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
-    }
-
-    trackEmployeeById(index: number, item: IEmployee) {
-        return item.id;
     }
 
     trackTaskById(index: number, item: ITask) {
         return item.id;
     }
 
-    getSelected(selectedVals: Array<any>, option: any) {
+    trackEmployeeById(index: number, item: IEmployee) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: any[], option: any) {
         if (selectedVals) {
             for (let i = 0; i < selectedVals.length; i++) {
                 if (option.id === selectedVals[i].id) {

@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    ContactComponent,
-    ContactDetailComponent,
-    ContactUpdateComponent,
-    ContactDeletePopupComponent,
-    ContactDeleteDialogComponent,
-    contactRoute,
-    contactPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { ContactComponent } from './contact.component';
+import { ContactDetailComponent } from './contact-detail.component';
+import { ContactUpdateComponent } from './contact-update.component';
+import { ContactDeletePopupComponent, ContactDeleteDialogComponent } from './contact-delete-dialog.component';
+import { contactRoute, contactPopupRoute } from './contact.route';
 
 const ENTITY_STATES = [...contactRoute, ...contactPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...contactRoute, ...contactPopupRoute];
         ContactDeleteDialogComponent,
         ContactDeletePopupComponent
     ],
-    entryComponents: [ContactComponent, ContactUpdateComponent, ContactDeleteDialogComponent, ContactDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [ContactDeleteDialogComponent]
 })
 export class XupIncTmsApplicationContactModule {}

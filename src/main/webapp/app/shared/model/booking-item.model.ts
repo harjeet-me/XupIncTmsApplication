@@ -2,12 +2,7 @@ import { Moment } from 'moment';
 import { IEquipment } from 'app/shared/model/equipment.model';
 import { IDriver } from 'app/shared/model/driver.model';
 import { IBooking } from 'app/shared/model/booking.model';
-
-export const enum StatusEnum {
-    PICKEDUP = 'PICKEDUP',
-    ONROAD = 'ONROAD',
-    DELIVERED = 'DELIVERED'
-}
+import { StatusEnum } from 'app/shared/model/enumerations/status-enum.model';
 
 export interface IBookingItem {
     id?: number;
@@ -24,8 +19,8 @@ export interface IBookingItem {
     pod?: any;
     hazmat?: boolean;
     recievedBy?: string;
-    equipment?: IEquipment;
-    driver?: IDriver;
+    equipment?: IEquipment[];
+    drivers?: IDriver[];
     mainBooking?: IBooking;
 }
 
@@ -45,8 +40,8 @@ export class BookingItem implements IBookingItem {
         public pod?: any,
         public hazmat?: boolean,
         public recievedBy?: string,
-        public equipment?: IEquipment,
-        public driver?: IDriver,
+        public equipment?: IEquipment[],
+        public drivers?: IDriver[],
         public mainBooking?: IBooking
     ) {
         this.hazmat = this.hazmat || false;

@@ -1,11 +1,6 @@
 import { IBookingItem } from 'app/shared/model/booking-item.model';
 import { ICustomer } from 'app/shared/model/customer.model';
-
-export const enum StatusEnum {
-    PICKEDUP = 'PICKEDUP',
-    ONROAD = 'ONROAD',
-    DELIVERED = 'DELIVERED'
-}
+import { StatusEnum } from 'app/shared/model/enumerations/status-enum.model';
 
 export interface IBooking {
     id?: number;

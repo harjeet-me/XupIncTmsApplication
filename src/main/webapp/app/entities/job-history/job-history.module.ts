@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    JobHistoryComponent,
-    JobHistoryDetailComponent,
-    JobHistoryUpdateComponent,
-    JobHistoryDeletePopupComponent,
-    JobHistoryDeleteDialogComponent,
-    jobHistoryRoute,
-    jobHistoryPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { JobHistoryComponent } from './job-history.component';
+import { JobHistoryDetailComponent } from './job-history-detail.component';
+import { JobHistoryUpdateComponent } from './job-history-update.component';
+import { JobHistoryDeletePopupComponent, JobHistoryDeleteDialogComponent } from './job-history-delete-dialog.component';
+import { jobHistoryRoute, jobHistoryPopupRoute } from './job-history.route';
 
 const ENTITY_STATES = [...jobHistoryRoute, ...jobHistoryPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...jobHistoryRoute, ...jobHistoryPopupRoute];
         JobHistoryDeleteDialogComponent,
         JobHistoryDeletePopupComponent
     ],
-    entryComponents: [JobHistoryComponent, JobHistoryUpdateComponent, JobHistoryDeleteDialogComponent, JobHistoryDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [JobHistoryDeleteDialogComponent]
 })
 export class XupIncTmsApplicationJobHistoryModule {}

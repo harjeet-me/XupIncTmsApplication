@@ -1,16 +1,20 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Booking;
 import com.xupinc.tms.v1.service.BookingService;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
-import com.xupinc.tms.v1.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +28,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Booking.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Booking}.
  */
 @RestController
 @RequestMapping("/api")
@@ -34,6 +38,9 @@ public class BookingResource {
 
     private static final String ENTITY_NAME = "booking";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final BookingService bookingService;
 
     public BookingResource(BookingService bookingService) {
@@ -41,11 +48,11 @@ public class BookingResource {
     }
 
     /**
-     * POST  /bookings : Create a new booking.
+     * {@code POST  /bookings} : Create a new booking.
      *
-     * @param booking the booking to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new booking, or with status 400 (Bad Request) if the booking has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param booking the booking to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new booking, or with status {@code 400 (Bad Request)} if the booking has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/bookings")
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws URISyntaxException {
@@ -55,18 +62,18 @@ public class BookingResource {
         }
         Booking result = bookingService.save(booking);
         return ResponseEntity.created(new URI("/api/bookings/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /bookings : Updates an existing booking.
+     * {@code PUT  /bookings} : Updates an existing booking.
      *
-     * @param booking the booking to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated booking,
-     * or with status 400 (Bad Request) if the booking is not valid,
-     * or with status 500 (Internal Server Error) if the booking couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param booking the booking to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated booking,
+     * or with status {@code 400 (Bad Request)} if the booking is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the booking couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/bookings")
     public ResponseEntity<Booking> updateBooking(@RequestBody Booking booking) throws URISyntaxException {
@@ -76,29 +83,31 @@ public class BookingResource {
         }
         Booking result = bookingService.save(booking);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, booking.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, booking.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /bookings : get all the bookings.
+     * {@code GET  /bookings} : get all the bookings.
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of bookings in body
+
+     * @param pageable the pagination information.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bookings in body.
      */
     @GetMapping("/bookings")
     public ResponseEntity<List<Booking>> getAllBookings(Pageable pageable) {
         log.debug("REST request to get a page of Bookings");
         Page<Booking> page = bookingService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bookings");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /bookings/:id : get the "id" booking.
+     * {@code GET  /bookings/:id} : get the "id" booking.
      *
-     * @param id the id of the booking to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the booking, or with status 404 (Not Found)
+     * @param id the id of the booking to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the booking, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/bookings/{id}")
     public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
@@ -108,32 +117,31 @@ public class BookingResource {
     }
 
     /**
-     * DELETE  /bookings/:id : delete the "id" booking.
+     * {@code DELETE  /bookings/:id} : delete the "id" booking.
      *
-     * @param id the id of the booking to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the booking to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/bookings/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         log.debug("REST request to delete Booking : {}", id);
         bookingService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/bookings?query=:query : search for the booking corresponding
+     * {@code SEARCH  /_search/bookings?query=:query} : search for the booking corresponding
      * to the query.
      *
-     * @param query the query of the booking search
-     * @param pageable the pagination information
-     * @return the result of the search
+     * @param query the query of the booking search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
      */
     @GetMapping("/_search/bookings")
     public ResponseEntity<List<Booking>> searchBookings(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Bookings for query {}", query);
         Page<Booking> page = bookingService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/bookings");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
 }

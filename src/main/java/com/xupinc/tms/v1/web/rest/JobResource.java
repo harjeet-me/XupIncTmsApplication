@@ -1,18 +1,23 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Job;
 import com.xupinc.tms.v1.repository.JobRepository;
 import com.xupinc.tms.v1.repository.search.JobSearchRepository;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
-import com.xupinc.tms.v1.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,15 +31,19 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Job.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Job}.
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class JobResource {
 
     private final Logger log = LoggerFactory.getLogger(JobResource.class);
 
     private static final String ENTITY_NAME = "job";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private final JobRepository jobRepository;
 
@@ -46,11 +55,11 @@ public class JobResource {
     }
 
     /**
-     * POST  /jobs : Create a new job.
+     * {@code POST  /jobs} : Create a new job.
      *
-     * @param job the job to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new job, or with status 400 (Bad Request) if the job has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param job the job to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new job, or with status {@code 400 (Bad Request)} if the job has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/jobs")
     public ResponseEntity<Job> createJob(@RequestBody Job job) throws URISyntaxException {
@@ -61,18 +70,18 @@ public class JobResource {
         Job result = jobRepository.save(job);
         jobSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/jobs/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /jobs : Updates an existing job.
+     * {@code PUT  /jobs} : Updates an existing job.
      *
-     * @param job the job to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated job,
-     * or with status 400 (Bad Request) if the job is not valid,
-     * or with status 500 (Internal Server Error) if the job couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param job the job to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated job,
+     * or with status {@code 400 (Bad Request)} if the job is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the job couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/jobs")
     public ResponseEntity<Job> updateJob(@RequestBody Job job) throws URISyntaxException {
@@ -83,16 +92,17 @@ public class JobResource {
         Job result = jobRepository.save(job);
         jobSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, job.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, job.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /jobs : get all the jobs.
+     * {@code GET  /jobs} : get all the jobs.
      *
-     * @param pageable the pagination information
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
-     * @return the ResponseEntity with status 200 (OK) and the list of jobs in body
+
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of jobs in body.
      */
     @GetMapping("/jobs")
     public ResponseEntity<List<Job>> getAllJobs(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
@@ -103,15 +113,15 @@ public class JobResource {
         } else {
             page = jobRepository.findAll(pageable);
         }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/jobs?eagerload=%b", eagerload));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /jobs/:id : get the "id" job.
+     * {@code GET  /jobs/:id} : get the "id" job.
      *
-     * @param id the id of the job to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the job, or with status 404 (Not Found)
+     * @param id the id of the job to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the job, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/jobs/{id}")
     public ResponseEntity<Job> getJob(@PathVariable Long id) {
@@ -121,33 +131,32 @@ public class JobResource {
     }
 
     /**
-     * DELETE  /jobs/:id : delete the "id" job.
+     * {@code DELETE  /jobs/:id} : delete the "id" job.
      *
-     * @param id the id of the job to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the job to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/jobs/{id}")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
         log.debug("REST request to delete Job : {}", id);
         jobRepository.deleteById(id);
         jobSearchRepository.deleteById(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/jobs?query=:query : search for the job corresponding
+     * {@code SEARCH  /_search/jobs?query=:query} : search for the job corresponding
      * to the query.
      *
-     * @param query the query of the job search
-     * @param pageable the pagination information
-     * @return the result of the search
+     * @param query the query of the job search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
      */
     @GetMapping("/_search/jobs")
     public ResponseEntity<List<Job>> searchJobs(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Jobs for query {}", query);
         Page<Job> page = jobSearchRepository.search(queryStringQuery(query), pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/jobs");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
 }

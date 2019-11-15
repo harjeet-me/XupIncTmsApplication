@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Country.
+ * Service Implementation for managing {@link Country}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class CountryServiceImpl implements CountryService {
     /**
      * Save a country.
      *
-     * @param country the entity to save
-     * @return the persisted entity
+     * @param country the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Country save(Country country) {
@@ -52,7 +52,7 @@ public class CountryServiceImpl implements CountryService {
     /**
      * Get all the countries.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class CountryServiceImpl implements CountryService {
     /**
      * Get one country by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class CountryServiceImpl implements CountryService {
     /**
      * Delete the country by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class CountryServiceImpl implements CountryService {
     /**
      * Search for the country corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

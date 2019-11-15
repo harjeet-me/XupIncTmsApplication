@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    CustomerComponent,
-    CustomerDetailComponent,
-    CustomerUpdateComponent,
-    CustomerDeletePopupComponent,
-    CustomerDeleteDialogComponent,
-    customerRoute,
-    customerPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { CustomerComponent } from './customer.component';
+import { CustomerDetailComponent } from './customer-detail.component';
+import { CustomerUpdateComponent } from './customer-update.component';
+import { CustomerDeletePopupComponent, CustomerDeleteDialogComponent } from './customer-delete-dialog.component';
+import { customerRoute, customerPopupRoute } from './customer.route';
 
 const ENTITY_STATES = [...customerRoute, ...customerPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...customerRoute, ...customerPopupRoute];
         CustomerDeleteDialogComponent,
         CustomerDeletePopupComponent
     ],
-    entryComponents: [CustomerComponent, CustomerUpdateComponent, CustomerDeleteDialogComponent, CustomerDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [CustomerDeleteDialogComponent]
 })
 export class XupIncTmsApplicationCustomerModule {}

@@ -1,8 +1,5 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { ContainerService } from 'app/entities/container/container.service';
 import { IContainer, Container } from 'app/shared/model/container.model';
@@ -13,10 +10,12 @@ describe('Service Tests', () => {
         let service: ContainerService;
         let httpMock: HttpTestingController;
         let elemDefault: IContainer;
+        let expectedResult;
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [HttpClientTestingModule]
             });
+            expectedResult = {};
             injector = getTestBed();
             service = injector.get(ContainerService);
             httpMock = injector.get(HttpTestingController);
@@ -24,19 +23,20 @@ describe('Service Tests', () => {
             elemDefault = new Container(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA');
         });
 
-        describe('Service methods', async () => {
-            it('should find an element', async () => {
+        describe('Service methods', () => {
+            it('should find an element', () => {
                 const returnedFromService = Object.assign({}, elemDefault);
                 service
                     .find(123)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: elemDefault }));
+                    .subscribe(resp => (expectedResult = resp));
 
                 const req = httpMock.expectOne({ method: 'GET' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: elemDefault });
             });
 
-            it('should create a Container', async () => {
+            it('should create a Container', () => {
                 const returnedFromService = Object.assign(
                     {
                         id: 0
@@ -47,12 +47,13 @@ describe('Service Tests', () => {
                 service
                     .create(new Container(null))
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                    .subscribe(resp => (expectedResult = resp));
                 const req = httpMock.expectOne({ method: 'POST' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: expected });
             });
 
-            it('should update a Container', async () => {
+            it('should update a Container', () => {
                 const returnedFromService = Object.assign(
                     {
                         company: 'BBBBBB',
@@ -69,12 +70,13 @@ describe('Service Tests', () => {
                 service
                     .update(expected)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                    .subscribe(resp => (expectedResult = resp));
                 const req = httpMock.expectOne({ method: 'PUT' });
-                req.flush(JSON.stringify(returnedFromService));
+                req.flush(returnedFromService);
+                expect(expectedResult).toMatchObject({ body: expected });
             });
 
-            it('should return a list of Container', async () => {
+            it('should return a list of Container', () => {
                 const returnedFromService = Object.assign(
                     {
                         company: 'BBBBBB',
@@ -93,17 +95,19 @@ describe('Service Tests', () => {
                         take(1),
                         map(resp => resp.body)
                     )
-                    .subscribe(body => expect(body).toContainEqual(expected));
+                    .subscribe(body => (expectedResult = body));
                 const req = httpMock.expectOne({ method: 'GET' });
-                req.flush(JSON.stringify([returnedFromService]));
+                req.flush([returnedFromService]);
                 httpMock.verify();
+                expect(expectedResult).toContainEqual(expected);
             });
 
-            it('should delete a Container', async () => {
-                const rxPromise = service.delete(123).subscribe(resp => expect(resp.ok));
+            it('should delete a Container', () => {
+                service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
                 const req = httpMock.expectOne({ method: 'DELETE' });
                 req.flush({ status: 200 });
+                expect(expectedResult);
             });
         });
 

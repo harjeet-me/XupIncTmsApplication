@@ -1,16 +1,15 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 
@@ -20,13 +19,14 @@ import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 @Entity
 @Table(name = "booking_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "bookingitem")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "bookingitem")
 public class BookingItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "description")
@@ -70,15 +70,15 @@ public class BookingItem implements Serializable {
     @Column(name = "recieved_by")
     private String recievedBy;
 
-    @ManyToOne
-    @JsonIgnoreProperties("bookingItems")
-    private Equipment equipment;
+    @OneToMany(mappedBy = "bookingItem")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Equipment> equipment = new HashSet<>();
 
-    @ManyToOne
-    @JsonIgnoreProperties("bookingItems")
-    private Driver driver;
+    @OneToMany(mappedBy = "bookingItem")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Driver> drivers = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("bookingItems")
     private Booking mainBooking;
 
@@ -260,30 +260,54 @@ public class BookingItem implements Serializable {
         this.recievedBy = recievedBy;
     }
 
-    public Equipment getEquipment() {
+    public Set<Equipment> getEquipment() {
         return equipment;
     }
 
-    public BookingItem equipment(Equipment equipment) {
+    public BookingItem equipment(Set<Equipment> equipment) {
         this.equipment = equipment;
         return this;
     }
 
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public BookingItem driver(Driver driver) {
-        this.driver = driver;
+    public BookingItem addEquipment(Equipment equipment) {
+        this.equipment.add(equipment);
+        equipment.setBookingItem(this);
         return this;
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public BookingItem removeEquipment(Equipment equipment) {
+        this.equipment.remove(equipment);
+        equipment.setBookingItem(null);
+        return this;
+    }
+
+    public void setEquipment(Set<Equipment> equipment) {
+        this.equipment = equipment;
+    }
+
+    public Set<Driver> getDrivers() {
+        return drivers;
+    }
+
+    public BookingItem drivers(Set<Driver> drivers) {
+        this.drivers = drivers;
+        return this;
+    }
+
+    public BookingItem addDriver(Driver driver) {
+        this.drivers.add(driver);
+        driver.setBookingItem(this);
+        return this;
+    }
+
+    public BookingItem removeDriver(Driver driver) {
+        this.drivers.remove(driver);
+        driver.setBookingItem(null);
+        return this;
+    }
+
+    public void setDrivers(Set<Driver> drivers) {
+        this.drivers = drivers;
     }
 
     public Booking getMainBooking() {
@@ -305,19 +329,15 @@ public class BookingItem implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof BookingItem)) {
             return false;
         }
-        BookingItem bookingItem = (BookingItem) o;
-        if (bookingItem.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), bookingItem.getId());
+        return id != null && id.equals(((BookingItem) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

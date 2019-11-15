@@ -1,11 +1,14 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Container;
 import com.xupinc.tms.v1.service.ContainerService;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +22,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Container.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Container}.
  */
 @RestController
 @RequestMapping("/api")
@@ -29,6 +32,9 @@ public class ContainerResource {
 
     private static final String ENTITY_NAME = "container";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final ContainerService containerService;
 
     public ContainerResource(ContainerService containerService) {
@@ -36,11 +42,11 @@ public class ContainerResource {
     }
 
     /**
-     * POST  /containers : Create a new container.
+     * {@code POST  /containers} : Create a new container.
      *
-     * @param container the container to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new container, or with status 400 (Bad Request) if the container has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param container the container to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new container, or with status {@code 400 (Bad Request)} if the container has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/containers")
     public ResponseEntity<Container> createContainer(@RequestBody Container container) throws URISyntaxException {
@@ -50,18 +56,18 @@ public class ContainerResource {
         }
         Container result = containerService.save(container);
         return ResponseEntity.created(new URI("/api/containers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /containers : Updates an existing container.
+     * {@code PUT  /containers} : Updates an existing container.
      *
-     * @param container the container to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated container,
-     * or with status 400 (Bad Request) if the container is not valid,
-     * or with status 500 (Internal Server Error) if the container couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param container the container to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated container,
+     * or with status {@code 400 (Bad Request)} if the container is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the container couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/containers")
     public ResponseEntity<Container> updateContainer(@RequestBody Container container) throws URISyntaxException {
@@ -71,14 +77,15 @@ public class ContainerResource {
         }
         Container result = containerService.save(container);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, container.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, container.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /containers : get all the containers.
+     * {@code GET  /containers} : get all the containers.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of containers in body
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of containers in body.
      */
     @GetMapping("/containers")
     public List<Container> getAllContainers() {
@@ -87,10 +94,10 @@ public class ContainerResource {
     }
 
     /**
-     * GET  /containers/:id : get the "id" container.
+     * {@code GET  /containers/:id} : get the "id" container.
      *
-     * @param id the id of the container to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the container, or with status 404 (Not Found)
+     * @param id the id of the container to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the container, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/containers/{id}")
     public ResponseEntity<Container> getContainer(@PathVariable Long id) {
@@ -100,29 +107,28 @@ public class ContainerResource {
     }
 
     /**
-     * DELETE  /containers/:id : delete the "id" container.
+     * {@code DELETE  /containers/:id} : delete the "id" container.
      *
-     * @param id the id of the container to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the container to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/containers/{id}")
     public ResponseEntity<Void> deleteContainer(@PathVariable Long id) {
         log.debug("REST request to delete Container : {}", id);
         containerService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/containers?query=:query : search for the container corresponding
+     * {@code SEARCH  /_search/containers?query=:query} : search for the container corresponding
      * to the query.
      *
-     * @param query the query of the container search
-     * @return the result of the search
+     * @param query the query of the container search.
+     * @return the result of the search.
      */
     @GetMapping("/_search/containers")
     public List<Container> searchContainers(@RequestParam String query) {
         log.debug("REST request to search Containers for query {}", query);
         return containerService.search(query);
     }
-
 }

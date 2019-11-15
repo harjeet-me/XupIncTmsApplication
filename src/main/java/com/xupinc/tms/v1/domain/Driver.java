@@ -1,18 +1,13 @@
 package com.xupinc.tms.v1.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Driver.
@@ -20,13 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "driver")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "driver")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "driver")
 public class Driver implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "company")
@@ -50,9 +46,10 @@ public class Driver implements Serializable {
     @Column(name = "dob")
     private LocalDate dob;
 
-    @OneToMany(mappedBy = "driver")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<BookingItem> bookingItems = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("drivers")
+    private BookingItem bookingItem;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -153,29 +150,17 @@ public class Driver implements Serializable {
         this.dob = dob;
     }
 
-    public Set<BookingItem> getBookingItems() {
-        return bookingItems;
+    public BookingItem getBookingItem() {
+        return bookingItem;
     }
 
-    public Driver bookingItems(Set<BookingItem> bookingItems) {
-        this.bookingItems = bookingItems;
+    public Driver bookingItem(BookingItem bookingItem) {
+        this.bookingItem = bookingItem;
         return this;
     }
 
-    public Driver addBookingItem(BookingItem bookingItem) {
-        this.bookingItems.add(bookingItem);
-        bookingItem.setDriver(this);
-        return this;
-    }
-
-    public Driver removeBookingItem(BookingItem bookingItem) {
-        this.bookingItems.remove(bookingItem);
-        bookingItem.setDriver(null);
-        return this;
-    }
-
-    public void setBookingItems(Set<BookingItem> bookingItems) {
-        this.bookingItems = bookingItems;
+    public void setBookingItem(BookingItem bookingItem) {
+        this.bookingItem = bookingItem;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -184,19 +169,15 @@ public class Driver implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Driver)) {
             return false;
         }
-        Driver driver = (Driver) o;
-        if (driver.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), driver.getId());
+        return id != null && id.equals(((Driver) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

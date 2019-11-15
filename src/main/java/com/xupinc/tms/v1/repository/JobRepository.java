@@ -1,5 +1,4 @@
 package com.xupinc.tms.v1.repository;
-
 import com.xupinc.tms.v1.domain.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import java.util.Optional;
 /**
  * Spring Data  repository for the Job entity.
  */
-@SuppressWarnings("unused")
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
 
@@ -21,7 +19,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
         countQuery = "select count(distinct job) from Job job")
     Page<Job> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query(value = "select distinct job from Job job left join fetch job.tasks")
+    @Query("select distinct job from Job job left join fetch job.tasks")
     List<Job> findAllWithEagerRelationships();
 
     @Query("select job from Job job left join fetch job.tasks where job.id =:id")

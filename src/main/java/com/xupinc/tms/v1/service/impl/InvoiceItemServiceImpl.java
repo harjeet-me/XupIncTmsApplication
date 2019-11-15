@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing InvoiceItem.
+ * Service Implementation for managing {@link InvoiceItem}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     /**
      * Save a invoiceItem.
      *
-     * @param invoiceItem the entity to save
-     * @return the persisted entity
+     * @param invoiceItem the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public InvoiceItem save(InvoiceItem invoiceItem) {
@@ -52,7 +52,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     /**
      * Get all the invoiceItems.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     /**
      * Get one invoiceItem by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     /**
      * Delete the invoiceItem by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     /**
      * Search for the invoiceItem corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

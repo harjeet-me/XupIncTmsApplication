@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing JobHistory.
+ * Service Implementation for managing {@link JobHistory}.
  */
 @Service
 @Transactional
@@ -37,8 +37,8 @@ public class JobHistoryServiceImpl implements JobHistoryService {
     /**
      * Save a jobHistory.
      *
-     * @param jobHistory the entity to save
-     * @return the persisted entity
+     * @param jobHistory the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public JobHistory save(JobHistory jobHistory) {
@@ -51,8 +51,8 @@ public class JobHistoryServiceImpl implements JobHistoryService {
     /**
      * Get all the jobHistories.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class JobHistoryServiceImpl implements JobHistoryService {
     /**
      * Get one jobHistory by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class JobHistoryServiceImpl implements JobHistoryService {
     /**
      * Delete the jobHistory by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,9 +90,9 @@ public class JobHistoryServiceImpl implements JobHistoryService {
     /**
      * Search for the jobHistory corresponding to the query.
      *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param query the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

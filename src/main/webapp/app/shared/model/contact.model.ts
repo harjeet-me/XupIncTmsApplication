@@ -1,11 +1,5 @@
 import { ICustomer } from 'app/shared/model/customer.model';
-
-export const enum DesignationEnum {
-    MANAGER = 'MANAGER',
-    ACCOUNTANT = 'ACCOUNTANT',
-    OWNER = 'OWNER',
-    DISPATCHER = 'DISPATCHER'
-}
+import { DesignationEnum } from 'app/shared/model/enumerations/designation-enum.model';
 
 export interface IContact {
     id?: number;

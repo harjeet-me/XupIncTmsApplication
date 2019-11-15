@@ -1,11 +1,14 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Department;
 import com.xupinc.tms.v1.service.DepartmentService;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +23,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Department.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Department}.
  */
 @RestController
 @RequestMapping("/api")
@@ -30,6 +33,9 @@ public class DepartmentResource {
 
     private static final String ENTITY_NAME = "department";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final DepartmentService departmentService;
 
     public DepartmentResource(DepartmentService departmentService) {
@@ -37,11 +43,11 @@ public class DepartmentResource {
     }
 
     /**
-     * POST  /departments : Create a new department.
+     * {@code POST  /departments} : Create a new department.
      *
-     * @param department the department to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new department, or with status 400 (Bad Request) if the department has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param department the department to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new department, or with status {@code 400 (Bad Request)} if the department has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/departments")
     public ResponseEntity<Department> createDepartment(@Valid @RequestBody Department department) throws URISyntaxException {
@@ -51,18 +57,18 @@ public class DepartmentResource {
         }
         Department result = departmentService.save(department);
         return ResponseEntity.created(new URI("/api/departments/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /departments : Updates an existing department.
+     * {@code PUT  /departments} : Updates an existing department.
      *
-     * @param department the department to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated department,
-     * or with status 400 (Bad Request) if the department is not valid,
-     * or with status 500 (Internal Server Error) if the department couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param department the department to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated department,
+     * or with status {@code 400 (Bad Request)} if the department is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the department couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/departments")
     public ResponseEntity<Department> updateDepartment(@Valid @RequestBody Department department) throws URISyntaxException {
@@ -72,14 +78,15 @@ public class DepartmentResource {
         }
         Department result = departmentService.save(department);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, department.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, department.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /departments : get all the departments.
+     * {@code GET  /departments} : get all the departments.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of departments in body
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of departments in body.
      */
     @GetMapping("/departments")
     public List<Department> getAllDepartments() {
@@ -88,10 +95,10 @@ public class DepartmentResource {
     }
 
     /**
-     * GET  /departments/:id : get the "id" department.
+     * {@code GET  /departments/:id} : get the "id" department.
      *
-     * @param id the id of the department to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the department, or with status 404 (Not Found)
+     * @param id the id of the department to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the department, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/departments/{id}")
     public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
@@ -101,29 +108,28 @@ public class DepartmentResource {
     }
 
     /**
-     * DELETE  /departments/:id : delete the "id" department.
+     * {@code DELETE  /departments/:id} : delete the "id" department.
      *
-     * @param id the id of the department to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the department to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/departments/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         log.debug("REST request to delete Department : {}", id);
         departmentService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/departments?query=:query : search for the department corresponding
+     * {@code SEARCH  /_search/departments?query=:query} : search for the department corresponding
      * to the query.
      *
-     * @param query the query of the department search
-     * @return the result of the search
+     * @param query the query of the department search.
+     * @return the result of the search.
      */
     @GetMapping("/_search/departments")
     public List<Department> searchDepartments(@RequestParam String query) {
         log.debug("REST request to search Departments for query {}", query);
         return departmentService.search(query);
     }
-
 }

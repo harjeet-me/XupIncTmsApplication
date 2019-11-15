@@ -17,11 +17,15 @@ entity Invoice {
 }
 
 entity InvoiceItem {
-     name String,
+     
+     description String,
+     qty Integer,
+     price Integer,
+     total Integer,
      status String,
      shipmentNumber String,
      bol String,
-     status  StatusEnum
+     status  InvoiceStatus
 	
 }
 
@@ -139,6 +143,10 @@ enum StatusEnum {
     PICKEDUP, ONROAD , DELIVERED
 }
 
+enum InvoiceStatus {
+    DRAFT, GENERATED , SENT ,PAID , OVERDRAFT , VOIDED , PARTIALLY_PAID
+}
+
 enum DesignationEnum {
     MANAGER, ACCOUNTANT , OWNER , DISPATCHER
 }
@@ -172,7 +180,7 @@ relationship OneToMany {
 }
 
 
-relationship ManyToOne {
+relationship OneToMany {
 
    
     BookingItem {equipment(number)}   to Equipment,

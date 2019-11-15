@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-insurance" [routerLink]="['/insurance/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Insurance
+            Create a new Insurance
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,17 +26,20 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="insurances">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="insurances?.length === 0">
+        <span>No insurances found</span>
+    </div>
+    <div class="table-responsive" *ngIf="insurances?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Provider Number</span></th>
-            <th><span>Provider</span></th>
-            <th><span>Description</span></th>
-            <th><span>Start Date</span></th>
-            <th><span>Expiry Date</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Provider Number</span></th>
+            <th scope="col" ><span>Provider</span></th>
+            <th scope="col" ><span>Description</span></th>
+            <th scope="col" ><span>Start Date</span></th>
+            <th scope="col" ><span>Expiry Date</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -47,7 +51,7 @@
                 <td>{{insurance.startDate | date:'mediumDate'}}</td>
                 <td>{{insurance.expiryDate | date:'mediumDate'}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/insurance', insurance.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -61,7 +65,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'insurance', { outlets: { popup: insurance.id + '/delete'} }]"
+                                [routerLink]="['/insurance', { outlets: { popup: insurance.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

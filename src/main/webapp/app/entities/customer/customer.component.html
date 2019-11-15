@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-customer" [routerLink]="['/customer/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Customer
+            Create a new Customer
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,28 +26,31 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="customers">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="customers?.length === 0">
+        <span>No customers found</span>
+    </div>
+    <div class="table-responsive" *ngIf="customers?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Company</span></th>
-            <th><span>First Name</span></th>
-            <th><span>Last Name</span></th>
-            <th><span>Email</span></th>
-            <th><span>Dot</span></th>
-            <th><span>Mc</span></th>
-            <th><span>Phone Number</span></th>
-            <th><span>Address</span></th>
-            <th><span>Street Address</span></th>
-            <th><span>City</span></th>
-            <th><span>State Province</span></th>
-            <th><span>Country</span></th>
-            <th><span>Postal Code</span></th>
-            <th><span>Billing Address</span></th>
-            <th><span>Contact</span></th>
-            <th><span>Insurance</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Company</span></th>
+            <th scope="col" ><span>First Name</span></th>
+            <th scope="col" ><span>Last Name</span></th>
+            <th scope="col" ><span>Email</span></th>
+            <th scope="col" ><span>Dot</span></th>
+            <th scope="col" ><span>Mc</span></th>
+            <th scope="col" ><span>Phone Number</span></th>
+            <th scope="col" ><span>Address</span></th>
+            <th scope="col" ><span>Street Address</span></th>
+            <th scope="col" ><span>City</span></th>
+            <th scope="col" ><span>State Province</span></th>
+            <th scope="col" ><span>Country</span></th>
+            <th scope="col" ><span>Postal Code</span></th>
+            <th scope="col" ><span>Billing Address</span></th>
+            <th scope="col" ><span>Contact</span></th>
+            <th scope="col" ><span>Insurance</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -67,21 +71,21 @@
                 <td>{{customer.postalCode}}</td>
                 <td>
                     <div *ngIf="customer.billingAddress">
-                        <a [routerLink]="['../location', customer.billingAddress?.id, 'view' ]" >{{customer.billingAddress?.city}}</a>
+                        <a [routerLink]="['/location', customer.billingAddress?.id, 'view' ]" >{{customer.billingAddress?.city}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="customer.contact">
-                        <a [routerLink]="['../contact', customer.contact?.id, 'view' ]" >{{customer.contact?.designation}}</a>
+                        <a [routerLink]="['/contact', customer.contact?.id, 'view' ]" >{{customer.contact?.designation}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="customer.insurance">
-                        <a [routerLink]="['../insurance', customer.insurance?.id, 'view' ]" >{{customer.insurance?.providerNumber}}</a>
+                        <a [routerLink]="['/insurance', customer.insurance?.id, 'view' ]" >{{customer.insurance?.providerNumber}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/customer', customer.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -95,7 +99,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'customer', { outlets: { popup: customer.id + '/delete'} }]"
+                                [routerLink]="['/customer', { outlets: { popup: customer.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
