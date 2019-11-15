@@ -25,9 +25,11 @@
             <column name="last_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="dot" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="mc" type="bigint">
                 <constraints nullable="true" />
             </column>

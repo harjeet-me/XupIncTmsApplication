@@ -32,9 +32,6 @@ public class Vendor implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "dot")
-    private Long dot;
-
     @Column(name = "mc")
     private Long mc;
 
@@ -93,19 +90,6 @@ public class Vendor implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Long getDot() {
-        return dot;
-    }
-
-    public Vendor dot(Long dot) {
-        this.dot = dot;
-        return this;
-    }
-
-    public void setDot(Long dot) {
-        this.dot = dot;
     }
 
     public Long getMc() {
@@ -184,7 +168,6 @@ public class Vendor implements Serializable {
             ", company='" + getCompany() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", dot=" + getDot() +
             ", mc=" + getMc() +
             ", email='" + getEmail() + "'" +
             ", phoneNumber=" + getPhoneNumber() +

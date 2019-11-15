@@ -79,6 +79,10 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'job-history',
                 loadChildren: './job-history/job-history.module#XupIncTmsApplicationJobHistoryModule'
+            },
+            {
+                path: 'vendor',
+                loadChildren: './vendor/vendor.module#XupIncTmsApplicationVendorModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

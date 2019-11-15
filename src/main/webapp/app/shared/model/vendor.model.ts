@@ -3,7 +3,6 @@ export interface IVendor {
     company?: string;
     firstName?: string;
     lastName?: string;
-    dot?: number;
     mc?: number;
     email?: string;
     phoneNumber?: number;
@@ -16,7 +15,6 @@ export class Vendor implements IVendor {
         public company?: string,
         public firstName?: string,
         public lastName?: string,
-        public dot?: number,
         public mc?: number,
         public email?: string,
         public phoneNumber?: number,
