@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Insurance.
+ * Service Implementation for managing {@link Insurance}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class InsuranceServiceImpl implements InsuranceService {
     /**
      * Save a insurance.
      *
-     * @param insurance the entity to save
-     * @return the persisted entity
+     * @param insurance the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Insurance save(Insurance insurance) {
@@ -52,7 +52,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     /**
      * Get all the insurances.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -64,8 +64,8 @@ public class InsuranceServiceImpl implements InsuranceService {
 
 
     /**
-     *  get all the insurances where Customer is null.
-     *  @return the list of entities
+    *  Get all the insurances where Customer is {@code null}.
+     *  @return the list of entities.
      */
     @Transactional(readOnly = true) 
     public List<Insurance> findAllWhereCustomerIsNull() {
@@ -79,8 +79,8 @@ public class InsuranceServiceImpl implements InsuranceService {
     /**
      * Get one insurance by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -92,7 +92,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     /**
      * Delete the insurance by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -104,8 +104,8 @@ public class InsuranceServiceImpl implements InsuranceService {
     /**
      * Search for the insurance corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

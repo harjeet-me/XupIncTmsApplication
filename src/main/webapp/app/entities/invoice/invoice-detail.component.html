@@ -1,255 +1,10 @@
- <div *ngIf="invoice">
-
-
 <div class="row justify-content-center">
-    <div class="col-12"  >
-    
-    <div class="container">
-        <div class="toolbar hidden-print">
-        <div class="text-right">
-            <button id="printInvoice" onclick="window.print()" class="btn btn-info"><i class="fa fa-print"></i> Print </button>
-            <button class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Export as PDF</button>
-             <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/invoice', invoice.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
-            </button>
-            
-            <button type="button"
-                    [routerLink]="['/invoice', invoice.id, 'pview']"
-                    class="btn btn-info">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Print</span>
-            </button>
-        </div>
-        <hr>
-    </div>
-  <div class="card">
-<div  >
-<div  class="float-left" style="font-weight: 300;">
-
-  <img alt="Logo" src="https://homepages.cae.wisc.edu/~ece533/images/girl.png" style="height: inherit;" width="100px" height="100px">
-   </div>
-
-  <div class="float-right" >
-  <strong style="font-family: fantasy;">Bal Transport Inc </strong>
-<div>515 Tamrack dr</div>
-<div>Apt 15 , Union City ,CA ,94587</div>
-<div>Email: dispatch@baltransportinc.com</div>
-<div>Phone: +1 510 894 5364</div>
-   </div>
-   <div class="float-center" align="center" style="font-size:50px" >
-  <strong>Invoice </strong>
-   </div>
-
-</div>
-<div class="card-body">
-<div class="row mb-4">
-
-
-<div class="col-sm-4">
-<h6 class="mb-3">Invoice To:</h6>
-<div style="font-family: fantasy;">
-<div *ngIf="invoice.invoiceTo">
-                        <a [routerLink]="['/customer', invoice.invoiceTo?.id, 'view']">{{invoice.invoiceTo?.company}}</a> </div>
-</div>
-<div>Attn: {{invoice.invoiceTo.firstName}} {{invoice.invoiceTo.lastName}}</div>
-<div>{{invoice.invoiceTo.address}} {{invoice.invoiceTo.streetAddress}}, {{invoice.invoiceTo.city}}</div>
-<div>Email: {{invoice.invoiceTo.email}}</div>
-<div>Phone: {{invoice.invoiceTo.phoneNumber}}</div>
-</div>
-<div class="col-sm-4">
-
-</div>
-<div class="col-sm-4" >
-<h6 class="mb-3"></h6>
-<div style="font-family: fantasy;">
-<strong> Invoice #   {{invoice.id}} </strong>
-</div>
-<div style="font-family: fantasy;">
-<strong> Due Date #  {{invoice.invoiceDueDate}} </strong>
-</div>
-
-
-
-<div>
-<strong> Booking #   {{invoice.bookingNo}} </strong>
-</div>
-<div>
-<strong> Booking #   {{invoice.bookingNo}} </strong>
-</div>
-<div>
-<strong> Booking #   {{invoice.bookingNo}} </strong>
-</div>
-
-</div>
-
-</div>
-
-<div class="table-responsive-sm">
-<table class="table table-striped">
-<thead>
-<tr>
-<th class="center">#</th>
-<th>Item</th>
-<th>Description</th>
-
-<th class="right">Unit Cost</th>
-  <th class="center">Qty</th>
-<th class="right">Total</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="center">1</td>
-<td class="left strong">Origin License</td>
-<td class="left">Extended License</td>
-
-<td class="right">$999,00</td>
-  <td class="center">1</td>
-<td class="right">$999,00</td>
-</tr>
-<tr>
-<td class="center">2</td>
-<td class="left">Custom Services</td>
-<td class="left">Instalation and Customization (cost per hour)</td>
-
-<td class="right">$150,00</td>
-  <td class="center">20</td>
-<td class="right">$3.000,00</td>
-</tr>
-<tr>
-<td class="center">3</td>
-<td class="left">Hosting</td>
-<td class="left">1 year subcription</td>
-
-<td class="right">$499,00</td>
-  <td class="center">1</td>
-<td class="right">$499,00</td>
-</tr>
-<tr>
-<td class="center">4</td>
-<td class="left">Platinum Support</td>
-<td class="left">1 year subcription 24/7</td>
-
-<td class="right">$3.999,00</td>
-  <td class="center">1</td>
-<td class="right">$3.999,00</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="row">
-<div class="col-lg-4 col-sm-5">
-
-</div>
-
-<div class="col-lg-4 col-sm-5 ml-auto">
-<table class="table table-clear">
-<tbody>
-<tr>
-<td class="left">
-<strong>Subtotal</strong>
-</td>
-<td class="right">$8.497,00</td>
-</tr>
-<tr>
-<td class="left">
-<strong>Discount (20%)</strong>
-</td>
-<td class="right">$1,699,40</td>
-</tr>
-<tr>
-<td class="left">
- <strong>VAT (10%)</strong>
-</td>
-<td class="right">$679,76</td>
-</tr>
-<tr>
-<td class="left">
-<strong>Total</strong>
-</td>
-<td class="right">
-<strong>$7.477,36</strong>
-</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-
-</div>
-
-</div>
-</div>
-</div>
-    <!-- 
-    
-       
+    <div class="col-8">
+        <div *ngIf="invoice">
             <h2><span>Invoice</span> {{invoice.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
-            
-               <div class="form-group" style="border: medium;background-color: grey;">
-            
-             <dt><span>Invoice To</span></dt>
-                <dd>
-                    <div *ngIf="invoice.invoiceTo">
-                        <a [routerLink]="['/customer', invoice.invoiceTo?.id, 'view']">{{invoice.invoiceTo?.company}}</a>
-                    
-                                 
-                <dd>
-                    <span>{{invoice.invoiceTo.address}}</span>
-                </dd>
-                <dt><span>Street Address</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.streetAddress}}</span>
-                </dd>
-                <dt><span>City</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.city}}</span>
-                </dd>
-                <dt><span>State Province</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.stateProvince}}</span>
-                </dd>
-                <dt><span>Country</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.country}}</span>
-                </dd>
-                <dt><span>Postal Code</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.postalCode}}</span>
-                </dd>
-                        
-                    </div>
-                </dd>
-                <dt><span>First Name</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.firstName}}</span>
-                </dd>
-                <dt><span>Last Name</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.lastName}}</span>
-                </dd>
-                <dt><span>Email</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.email}}</span>
-                </dd>
-                <dt><span>Phone Number</span></dt>
-                <dd>
-                    <span>{{invoice.invoiceTo.phoneNumber}}</span>
-                </dd>    
-                 <dt><span>Address</span></dt>
-                 
-                </div>
-                
-            <dl class="row-md jh-entity-details" style="border: medium;background-color: grey;">
+            <dl class="row-md jh-entity-details">
                 <dt><span>Booking No</span></dt>
                 <dd>
                     <span>{{invoice.bookingNo}}</span>
@@ -266,13 +21,25 @@
                 <dd>
                     <span>{{invoice.status}}</span>
                 </dd>
-               
+                <dt><span>Invoice To</span></dt>
+                <dd>
+                    <div *ngIf="invoice.invoiceTo">
+                        <a [routerLink]="['/customer', invoice.invoiceTo?.id, 'view']">{{invoice.invoiceTo?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
-            -->
-            
-            
-            
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/invoice', invoice.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
         </div>
     </div>
 </div>

@@ -1,18 +1,14 @@
 package com.xupinc.tms.v1.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.CountryEnum;
 
@@ -22,13 +18,14 @@ import com.xupinc.tms.v1.domain.enumeration.CountryEnum;
 @Entity
 @Table(name = "customer")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "customer")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "customer")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "company")
@@ -71,22 +68,26 @@ public class Customer implements Serializable {
     @Column(name = "postal_code")
     private String postalCode;
 
-    @OneToOne(optional = false)    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
 
     @JoinColumn(unique = true)
     private Location billingAddress;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Contact contact;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Insurance insurance;
 
     @OneToMany(mappedBy = "customer")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Booking> bookings = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -335,19 +336,15 @@ public class Customer implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Customer)) {
             return false;
         }
-        Customer customer = (Customer) o;
-        if (customer.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), customer.getId());
+        return id != null && id.equals(((Customer) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

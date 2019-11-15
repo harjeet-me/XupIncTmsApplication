@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-region" [routerLink]="['/region/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Region
+            Create a new Region
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,13 +26,16 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="regions">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="regions?.length === 0">
+        <span>No regions found</span>
+    </div>
+    <div class="table-responsive" *ngIf="regions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Region Name</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Region Name</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -39,7 +43,7 @@
                 <td><a [routerLink]="['/region', region.id, 'view' ]">{{region.id}}</a></td>
                 <td>{{region.regionName}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/region', region.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -53,7 +57,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'region', { outlets: { popup: region.id + '/delete'} }]"
+                                [routerLink]="['/region', { outlets: { popup: region.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

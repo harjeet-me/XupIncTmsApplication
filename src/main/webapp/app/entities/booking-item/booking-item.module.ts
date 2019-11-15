@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    BookingItemComponent,
-    BookingItemDetailComponent,
-    BookingItemUpdateComponent,
-    BookingItemDeletePopupComponent,
-    BookingItemDeleteDialogComponent,
-    bookingItemRoute,
-    bookingItemPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { BookingItemComponent } from './booking-item.component';
+import { BookingItemDetailComponent } from './booking-item-detail.component';
+import { BookingItemUpdateComponent } from './booking-item-update.component';
+import { BookingItemDeletePopupComponent, BookingItemDeleteDialogComponent } from './booking-item-delete-dialog.component';
+import { bookingItemRoute, bookingItemPopupRoute } from './booking-item.route';
 
 const ENTITY_STATES = [...bookingItemRoute, ...bookingItemPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...bookingItemRoute, ...bookingItemPopupRoute];
         BookingItemDeleteDialogComponent,
         BookingItemDeletePopupComponent
     ],
-    entryComponents: [BookingItemComponent, BookingItemUpdateComponent, BookingItemDeleteDialogComponent, BookingItemDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [BookingItemDeleteDialogComponent]
 })
 export class XupIncTmsApplicationBookingItemModule {}

@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Department.
+ * Service Implementation for managing {@link Department}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     /**
      * Save a department.
      *
-     * @param department the entity to save
-     * @return the persisted entity
+     * @param department the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Department save(Department department) {
@@ -52,7 +52,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     /**
      * Get all the departments.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     /**
      * Get one department by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     /**
      * Delete the department by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     /**
      * Search for the department corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

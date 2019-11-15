@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Booking.
+ * Service Implementation for managing {@link Booking}.
  */
 @Service
 @Transactional
@@ -37,8 +37,8 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Save a booking.
      *
-     * @param booking the entity to save
-     * @return the persisted entity
+     * @param booking the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Booking save(Booking booking) {
@@ -51,8 +51,8 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Get all the bookings.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Get one booking by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Delete the booking by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,9 +90,9 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Search for the booking corresponding to the query.
      *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param query the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { IVendor } from 'app/shared/model/vendor.model';
+import { IVendor, Vendor } from 'app/shared/model/vendor.model';
 import { VendorService } from './vendor.service';
 
 @Component({
@@ -11,15 +13,40 @@ import { VendorService } from './vendor.service';
     templateUrl: './vendor-update.component.html'
 })
 export class VendorUpdateComponent implements OnInit {
-    vendor: IVendor;
     isSaving: boolean;
 
-    constructor(protected vendorService: VendorService, protected activatedRoute: ActivatedRoute) {}
+    editForm = this.fb.group({
+        id: [],
+        company: [],
+        firstName: [],
+        lastName: [],
+        dot: [],
+        mc: [],
+        email: [],
+        phoneNumber: [],
+        insuranceProvider: []
+    });
+
+    constructor(protected vendorService: VendorService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ vendor }) => {
-            this.vendor = vendor;
+            this.updateForm(vendor);
+        });
+    }
+
+    updateForm(vendor: IVendor) {
+        this.editForm.patchValue({
+            id: vendor.id,
+            company: vendor.company,
+            firstName: vendor.firstName,
+            lastName: vendor.lastName,
+            dot: vendor.dot,
+            mc: vendor.mc,
+            email: vendor.email,
+            phoneNumber: vendor.phoneNumber,
+            insuranceProvider: vendor.insuranceProvider
         });
     }
 
@@ -29,15 +56,31 @@ export class VendorUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.vendor.id !== undefined) {
-            this.subscribeToSaveResponse(this.vendorService.update(this.vendor));
+        const vendor = this.createFromForm();
+        if (vendor.id !== undefined) {
+            this.subscribeToSaveResponse(this.vendorService.update(vendor));
         } else {
-            this.subscribeToSaveResponse(this.vendorService.create(this.vendor));
+            this.subscribeToSaveResponse(this.vendorService.create(vendor));
         }
     }
 
+    private createFromForm(): IVendor {
+        return {
+            ...new Vendor(),
+            id: this.editForm.get(['id']).value,
+            company: this.editForm.get(['company']).value,
+            firstName: this.editForm.get(['firstName']).value,
+            lastName: this.editForm.get(['lastName']).value,
+            dot: this.editForm.get(['dot']).value,
+            mc: this.editForm.get(['mc']).value,
+            email: this.editForm.get(['email']).value,
+            phoneNumber: this.editForm.get(['phoneNumber']).value,
+            insuranceProvider: this.editForm.get(['insuranceProvider']).value
+        };
+    }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IVendor>>) {
-        result.subscribe((res: HttpResponse<IVendor>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
 
     protected onSaveSuccess() {

@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-country" [routerLink]="['/country/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Country
+            Create a new Country
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,14 +26,17 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="countries">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="countries?.length === 0">
+        <span>No countries found</span>
+    </div>
+    <div class="table-responsive" *ngIf="countries?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Country Name</span></th>
-            <th><span>Region</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Country Name</span></th>
+            <th scope="col" ><span>Region</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -41,11 +45,11 @@
                 <td>{{country.countryName}}</td>
                 <td>
                     <div *ngIf="country.region">
-                        <a [routerLink]="['../region', country.region?.id, 'view' ]" >{{country.region?.id}}</a>
+                        <a [routerLink]="['/region', country.region?.id, 'view' ]" >{{country.region?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/country', country.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -59,7 +63,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'country', { outlets: { popup: country.id + '/delete'} }]"
+                                [routerLink]="['/country', { outlets: { popup: country.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

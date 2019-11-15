@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Driver.
+ * Service Implementation for managing {@link Driver}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class DriverServiceImpl implements DriverService {
     /**
      * Save a driver.
      *
-     * @param driver the entity to save
-     * @return the persisted entity
+     * @param driver the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Driver save(Driver driver) {
@@ -52,7 +52,7 @@ public class DriverServiceImpl implements DriverService {
     /**
      * Get all the drivers.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class DriverServiceImpl implements DriverService {
     /**
      * Get one driver by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class DriverServiceImpl implements DriverService {
     /**
      * Delete the driver by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class DriverServiceImpl implements DriverService {
     /**
      * Search for the driver corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

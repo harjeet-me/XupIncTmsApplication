@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing BookingItem.
+ * Service Interface for managing {@link BookingItem}.
  */
 public interface BookingItemService {
 
     /**
      * Save a bookingItem.
      *
-     * @param bookingItem the entity to save
-     * @return the persisted entity
+     * @param bookingItem the entity to save.
+     * @return the persisted entity.
      */
     BookingItem save(BookingItem bookingItem);
 
     /**
      * Get all the bookingItems.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     List<BookingItem> findAll();
 
@@ -29,24 +29,24 @@ public interface BookingItemService {
     /**
      * Get the "id" bookingItem.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     Optional<BookingItem> findOne(Long id);
 
     /**
      * Delete the "id" bookingItem.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     void delete(Long id);
 
     /**
      * Search for the bookingItem corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query the query of the search.
      * 
-     * @return the list of entities
+     * @return the list of entities.
      */
     List<BookingItem> search(String query);
 }

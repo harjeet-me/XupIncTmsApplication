@@ -1,16 +1,13 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 
@@ -20,13 +17,14 @@ import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 @Entity
 @Table(name = "invoice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "invoice")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "invoice")
 public class Invoice implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "booking_no")
@@ -42,7 +40,7 @@ public class Invoice implements Serializable {
     @Column(name = "status")
     private StatusEnum status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("invoices")
     private Customer invoiceTo;
 
@@ -126,19 +124,15 @@ public class Invoice implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Invoice)) {
             return false;
         }
-        Invoice invoice = (Invoice) o;
-        if (invoice.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), invoice.getId());
+        return id != null && id.equals(((Invoice) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

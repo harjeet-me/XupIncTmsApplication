@@ -1,15 +1,12 @@
 package com.xupinc.tms.v1.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.Language;
 
@@ -19,13 +16,14 @@ import com.xupinc.tms.v1.domain.enumeration.Language;
 @Entity
 @Table(name = "job_history")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "jobhistory")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "jobhistory")
 public class JobHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "start_date")
@@ -38,15 +36,18 @@ public class JobHistory implements Serializable {
     @Column(name = "language")
     private Language language;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Job job;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Department department;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Employee employee;
 
@@ -143,19 +144,15 @@ public class JobHistory implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof JobHistory)) {
             return false;
         }
-        JobHistory jobHistory = (JobHistory) o;
-        if (jobHistory.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), jobHistory.getId());
+        return id != null && id.equals(((JobHistory) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

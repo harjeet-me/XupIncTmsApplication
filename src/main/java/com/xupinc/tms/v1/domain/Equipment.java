@@ -1,14 +1,12 @@
 package com.xupinc.tms.v1.domain;
-
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.EquipmentEnum;
 
@@ -20,28 +18,33 @@ import com.xupinc.tms.v1.domain.enumeration.SizeEnum;
 @Entity
 @Table(name = "equipment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "equipment")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "equipment")
 public class Equipment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
-    @Column(name = "jhi_number")
+    @Column(name = "number")
     private String number;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
+    @Column(name = "type")
     private EquipmentEnum type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_size")
+    @Column(name = "size")
     private SizeEnum size;
 
     @Column(name = "insurance")
     private String insurance;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("equipment")
+    private BookingItem bookingItem;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -103,6 +106,19 @@ public class Equipment implements Serializable {
     public void setInsurance(String insurance) {
         this.insurance = insurance;
     }
+
+    public BookingItem getBookingItem() {
+        return bookingItem;
+    }
+
+    public Equipment bookingItem(BookingItem bookingItem) {
+        this.bookingItem = bookingItem;
+        return this;
+    }
+
+    public void setBookingItem(BookingItem bookingItem) {
+        this.bookingItem = bookingItem;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -110,19 +126,15 @@ public class Equipment implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Equipment)) {
             return false;
         }
-        Equipment equipment = (Equipment) o;
-        if (equipment.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), equipment.getId());
+        return id != null && id.equals(((Equipment) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

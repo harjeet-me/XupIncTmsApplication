@@ -21,7 +21,7 @@
         }
     ],
     "changelogDate": "20190408214419",
-    "javadoc": "Task entity.\n@author The JHipster team.",
+    "javadoc": "Task entity.\\n@author The JHipster team.",
     "entityTableName": "task",
     "dto": "no",
     "pagination": "no",
@@ -29,5 +29,6 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "readOnly": false
 }

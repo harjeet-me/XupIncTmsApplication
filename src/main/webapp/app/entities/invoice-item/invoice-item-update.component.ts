@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { IInvoiceItem } from 'app/shared/model/invoice-item.model';
+import { IInvoiceItem, InvoiceItem } from 'app/shared/model/invoice-item.model';
 import { InvoiceItemService } from './invoice-item.service';
 
 @Component({
@@ -11,15 +13,38 @@ import { InvoiceItemService } from './invoice-item.service';
     templateUrl: './invoice-item-update.component.html'
 })
 export class InvoiceItemUpdateComponent implements OnInit {
-    invoiceItem: IInvoiceItem;
     isSaving: boolean;
 
-    constructor(protected invoiceItemService: InvoiceItemService, protected activatedRoute: ActivatedRoute) {}
+    editForm = this.fb.group({
+        id: [],
+        description: [],
+        qty: [],
+        price: [],
+        total: [],
+        status: [],
+        shipmentNumber: [],
+        bol: []
+    });
+
+    constructor(protected invoiceItemService: InvoiceItemService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ invoiceItem }) => {
-            this.invoiceItem = invoiceItem;
+            this.updateForm(invoiceItem);
+        });
+    }
+
+    updateForm(invoiceItem: IInvoiceItem) {
+        this.editForm.patchValue({
+            id: invoiceItem.id,
+            description: invoiceItem.description,
+            qty: invoiceItem.qty,
+            price: invoiceItem.price,
+            total: invoiceItem.total,
+            status: invoiceItem.status,
+            shipmentNumber: invoiceItem.shipmentNumber,
+            bol: invoiceItem.bol
         });
     }
 
@@ -29,15 +54,30 @@ export class InvoiceItemUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.invoiceItem.id !== undefined) {
-            this.subscribeToSaveResponse(this.invoiceItemService.update(this.invoiceItem));
+        const invoiceItem = this.createFromForm();
+        if (invoiceItem.id !== undefined) {
+            this.subscribeToSaveResponse(this.invoiceItemService.update(invoiceItem));
         } else {
-            this.subscribeToSaveResponse(this.invoiceItemService.create(this.invoiceItem));
+            this.subscribeToSaveResponse(this.invoiceItemService.create(invoiceItem));
         }
     }
 
+    private createFromForm(): IInvoiceItem {
+        return {
+            ...new InvoiceItem(),
+            id: this.editForm.get(['id']).value,
+            description: this.editForm.get(['description']).value,
+            qty: this.editForm.get(['qty']).value,
+            price: this.editForm.get(['price']).value,
+            total: this.editForm.get(['total']).value,
+            status: this.editForm.get(['status']).value,
+            shipmentNumber: this.editForm.get(['shipmentNumber']).value,
+            bol: this.editForm.get(['bol']).value
+        };
+    }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IInvoiceItem>>) {
-        result.subscribe((res: HttpResponse<IInvoiceItem>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
 
     protected onSaveSuccess() {

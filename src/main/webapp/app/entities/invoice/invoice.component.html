@@ -1,41 +1,14 @@
-
-
-<div class="news"  >
-
-<div class="sidenav">
-  <a href="#about">Invoice</a>
-  <a href="#services">Customers</a>
-  <a href="#clients">Invoice Item</a>
-  <a href="#contact">Estimate</a>
-   <a href="#about">Invoice</a>
-  <a href="#services">Customers</a>
-  <a href="#clients">Invoice Item</a>
-  <a href="#contact">Estimate</a>
-   <a href="#about">Invoice</a>
-  <a href="#services">Customers</a>
-  <a href="#clients">Invoice Item</a>
-  <a href="#contact">Estimate</a>
-   <a href="#about">Invoice</a>
-  <a href="#services">Customers</a>
-  <a href="#clients">Invoice Item</a>
-  <a href="#contact">Estimate</a>
-</div>
-
-  <div class="news-local">
-   
-
-
-
-    <h2 id="page-heading"  >
+<div>
+    <h2 id="page-heading">
         <span>Invoices</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-invoice" [routerLink]="['/invoice/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Invoice
+            Create a new Invoice
             </span>
         </button>
-        
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -53,33 +26,36 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="invoices">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="invoices?.length === 0">
+        <span>No invoices found</span>
+    </div>
+    <div class="table-responsive" *ngIf="invoices?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Booking No</span></th>
-            <th><span>Invoice Total</span></th>
-            <th><span>Invoice Due Date</span></th>
-            <th><span>Status</span></th>
-            <th><span>Invoice To</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Booking No</span></th>
+            <th scope="col" ><span>Invoice Total</span></th>
+            <th scope="col" ><span>Invoice Due Date</span></th>
+            <th scope="col" ><span>Status</span></th>
+            <th scope="col" ><span>Invoice To</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let invoice of invoices ;trackBy: trackId">
-                <td><a [routerLink]="['/invoice', invoice.id, 'pview' ]">{{invoice.id}}</a></td>
+                <td><a [routerLink]="['/invoice', invoice.id, 'view' ]">{{invoice.id}}</a></td>
                 <td>{{invoice.bookingNo}}</td>
                 <td>{{invoice.invoiceTotal}}</td>
                 <td>{{invoice.invoiceDueDate | date:'medium'}}</td>
                 <td>{{invoice.status}}</td>
                 <td>
                     <div *ngIf="invoice.invoiceTo">
-                        <a [routerLink]="['../customer', invoice.invoiceTo?.id, 'view' ]" >{{invoice.invoiceTo?.id}}</a>
+                        <a [routerLink]="['/customer', invoice.invoiceTo?.id, 'view' ]" >{{invoice.invoiceTo?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/invoice', invoice.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -93,7 +69,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'invoice', { outlets: { popup: invoice.id + '/delete'} }]"
+                                [routerLink]="['/invoice', { outlets: { popup: invoice.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
@@ -106,6 +82,4 @@
             </tbody>
         </table>
     </div>
-</div>
-
 </div>

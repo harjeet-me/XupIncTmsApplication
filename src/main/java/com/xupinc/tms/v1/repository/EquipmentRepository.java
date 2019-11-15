@@ -1,5 +1,4 @@
 package com.xupinc.tms.v1.repository;
-
 import com.xupinc.tms.v1.domain.Equipment;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;

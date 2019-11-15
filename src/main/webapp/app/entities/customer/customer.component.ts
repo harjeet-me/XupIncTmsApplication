@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { ICustomer } from 'app/shared/model/customer.model';
-import { AccountService } from 'app/core';
 import { CustomerService } from './customer.service';
 
 @Component({
@@ -15,20 +13,17 @@ import { CustomerService } from './customer.service';
 })
 export class CustomerComponent implements OnInit, OnDestroy {
     customers: ICustomer[];
-    currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
 
     constructor(
         protected customerService: CustomerService,
-        protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
-        protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
+        protected activatedRoute: ActivatedRoute
     ) {
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+                ? this.activatedRoute.snapshot.queryParams['search']
                 : '';
     }
 
@@ -38,26 +33,13 @@ export class CustomerComponent implements OnInit, OnDestroy {
                 .search({
                     query: this.currentSearch
                 })
-                .pipe(
-                    filter((res: HttpResponse<ICustomer[]>) => res.ok),
-                    map((res: HttpResponse<ICustomer[]>) => res.body)
-                )
-                .subscribe((res: ICustomer[]) => (this.customers = res), (res: HttpErrorResponse) => this.onError(res.message));
+                .subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body));
             return;
         }
-        this.customerService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<ICustomer[]>) => res.ok),
-                map((res: HttpResponse<ICustomer[]>) => res.body)
-            )
-            .subscribe(
-                (res: ICustomer[]) => {
-                    this.customers = res;
-                    this.currentSearch = '';
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => {
+            this.customers = res.body;
+            this.currentSearch = '';
+        });
     }
 
     search(query) {
@@ -75,9 +57,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.accountService.identity().then(account => {
-            this.currentAccount = account;
-        });
         this.registerChangeInCustomers();
     }
 
@@ -90,10 +69,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCustomers() {
-        this.eventSubscriber = this.eventManager.subscribe('customerListModification', response => this.loadAll());
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
+        this.eventSubscriber = this.eventManager.subscribe('customerListModification', () => this.loadAll());
     }
 }

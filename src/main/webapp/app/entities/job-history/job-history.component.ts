@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 
 import { IJobHistory } from 'app/shared/model/job-history.model';
-import { AccountService } from 'app/core';
 
-import { ITEMS_PER_PAGE } from 'app/shared';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { JobHistoryService } from './job-history.service';
 
 @Component({
@@ -17,7 +15,6 @@ import { JobHistoryService } from './job-history.service';
 })
 export class JobHistoryComponent implements OnInit, OnDestroy {
     jobHistories: IJobHistory[];
-    currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
     links: any;
@@ -29,11 +26,9 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
 
     constructor(
         protected jobHistoryService: JobHistoryService,
-        protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
         protected parseLinks: JhiParseLinks,
-        protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
+        protected activatedRoute: ActivatedRoute
     ) {
         this.jobHistories = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -44,8 +39,8 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
         this.predicate = 'id';
         this.reverse = true;
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+                ? this.activatedRoute.snapshot.queryParams['search']
                 : '';
     }
 
@@ -58,10 +53,7 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
                     size: this.itemsPerPage,
                     sort: this.sort()
                 })
-                .subscribe(
-                    (res: HttpResponse<IJobHistory[]>) => this.paginateJobHistories(res.body, res.headers),
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+                .subscribe((res: HttpResponse<IJobHistory[]>) => this.paginateJobHistories(res.body, res.headers));
             return;
         }
         this.jobHistoryService
@@ -70,10 +62,7 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
                 size: this.itemsPerPage,
                 sort: this.sort()
             })
-            .subscribe(
-                (res: HttpResponse<IJobHistory[]>) => this.paginateJobHistories(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: HttpResponse<IJobHistory[]>) => this.paginateJobHistories(res.body, res.headers));
     }
 
     reset() {
@@ -116,9 +105,6 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.accountService.identity().then(account => {
-            this.currentAccount = account;
-        });
         this.registerChangeInJobHistories();
     }
 
@@ -131,7 +117,7 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInJobHistories() {
-        this.eventSubscriber = this.eventManager.subscribe('jobHistoryListModification', response => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('jobHistoryListModification', () => this.reset());
     }
 
     sort() {
@@ -148,9 +134,5 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
         for (let i = 0; i < data.length; i++) {
             this.jobHistories.push(data[i]);
         }
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

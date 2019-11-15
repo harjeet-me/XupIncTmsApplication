@@ -1,18 +1,14 @@
 package com.xupinc.tms.v1.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 
@@ -22,13 +18,14 @@ import com.xupinc.tms.v1.domain.enumeration.StatusEnum;
 @Entity
 @Table(name = "booking")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "booking")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "booking")
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "name")
@@ -50,7 +47,8 @@ public class Booking implements Serializable {
     @OneToMany(mappedBy = "mainBooking")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<BookingItem> bookingItems = new HashSet<>();
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("bookings")
     private Customer customer;
 
@@ -172,19 +170,15 @@ public class Booking implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Booking)) {
             return false;
         }
-        Booking booking = (Booking) o;
-        if (booking.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), booking.getId());
+        return id != null && id.equals(((Booking) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

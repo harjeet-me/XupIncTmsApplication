@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing Region.
+ * Service Implementation for managing {@link Region}.
  */
 @Service
 @Transactional
@@ -38,8 +38,8 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Save a region.
      *
-     * @param region the entity to save
-     * @return the persisted entity
+     * @param region the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Region save(Region region) {
@@ -52,7 +52,7 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Get all the regions.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Get one region by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Delete the region by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
@@ -90,8 +90,8 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Search for the region corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     * @param query the query of the search.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)

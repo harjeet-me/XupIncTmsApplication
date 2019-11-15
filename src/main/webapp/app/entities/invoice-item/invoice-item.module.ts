@@ -1,16 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    InvoiceItemComponent,
-    InvoiceItemDetailComponent,
-    InvoiceItemUpdateComponent,
-    InvoiceItemDeletePopupComponent,
-    InvoiceItemDeleteDialogComponent,
-    invoiceItemRoute,
-    invoiceItemPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { InvoiceItemComponent } from './invoice-item.component';
+import { InvoiceItemDetailComponent } from './invoice-item-detail.component';
+import { InvoiceItemUpdateComponent } from './invoice-item-update.component';
+import { InvoiceItemDeletePopupComponent, InvoiceItemDeleteDialogComponent } from './invoice-item-delete-dialog.component';
+import { invoiceItemRoute, invoiceItemPopupRoute } from './invoice-item.route';
 
 const ENTITY_STATES = [...invoiceItemRoute, ...invoiceItemPopupRoute];
 
@@ -23,7 +19,6 @@ const ENTITY_STATES = [...invoiceItemRoute, ...invoiceItemPopupRoute];
         InvoiceItemDeleteDialogComponent,
         InvoiceItemDeletePopupComponent
     ],
-    entryComponents: [InvoiceItemComponent, InvoiceItemUpdateComponent, InvoiceItemDeleteDialogComponent, InvoiceItemDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [InvoiceItemDeleteDialogComponent]
 })
 export class XupIncTmsApplicationInvoiceItemModule {}

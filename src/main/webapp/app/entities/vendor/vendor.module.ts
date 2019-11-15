@@ -1,23 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XupIncTmsApplicationSharedModule } from 'app/shared';
-import {
-    VendorComponent,
-    VendorDetailComponent,
-    VendorUpdateComponent,
-    VendorDeletePopupComponent,
-    VendorDeleteDialogComponent,
-    vendorRoute,
-    vendorPopupRoute
-} from './';
+import { XupIncTmsApplicationSharedModule } from 'app/shared/shared.module';
+import { VendorComponent } from './vendor.component';
+import { VendorDetailComponent } from './vendor-detail.component';
+import { VendorUpdateComponent } from './vendor-update.component';
+import { VendorDeletePopupComponent, VendorDeleteDialogComponent } from './vendor-delete-dialog.component';
+import { vendorRoute, vendorPopupRoute } from './vendor.route';
 
 const ENTITY_STATES = [...vendorRoute, ...vendorPopupRoute];
 
 @NgModule({
     imports: [XupIncTmsApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [VendorComponent, VendorDetailComponent, VendorUpdateComponent, VendorDeleteDialogComponent, VendorDeletePopupComponent],
-    entryComponents: [VendorComponent, VendorUpdateComponent, VendorDeleteDialogComponent, VendorDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    entryComponents: [VendorDeleteDialogComponent]
 })
 export class XupIncTmsApplicationVendorModule {}

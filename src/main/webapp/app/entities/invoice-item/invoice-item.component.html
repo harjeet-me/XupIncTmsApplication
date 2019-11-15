@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-invoice-item" [routerLink]="['/invoice-item/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Invoice Item
+            Create a new Invoice Item
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,27 +26,36 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="invoiceItems">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="invoiceItems?.length === 0">
+        <span>No invoiceItems found</span>
+    </div>
+    <div class="table-responsive" *ngIf="invoiceItems?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Name</span></th>
-            <th><span>Status</span></th>
-            <th><span>Shipment Number</span></th>
-            <th><span>Bol</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Description</span></th>
+            <th scope="col" ><span>Qty</span></th>
+            <th scope="col" ><span>Price</span></th>
+            <th scope="col" ><span>Total</span></th>
+            <th scope="col" ><span>Status</span></th>
+            <th scope="col" ><span>Shipment Number</span></th>
+            <th scope="col" ><span>Bol</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let invoiceItem of invoiceItems ;trackBy: trackId">
                 <td><a [routerLink]="['/invoice-item', invoiceItem.id, 'view' ]">{{invoiceItem.id}}</a></td>
-                <td>{{invoiceItem.name}}</td>
+                <td>{{invoiceItem.description}}</td>
+                <td>{{invoiceItem.qty}}</td>
+                <td>{{invoiceItem.price}}</td>
+                <td>{{invoiceItem.total}}</td>
                 <td>{{invoiceItem.status}}</td>
                 <td>{{invoiceItem.shipmentNumber}}</td>
                 <td>{{invoiceItem.bol}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/invoice-item', invoiceItem.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -59,7 +69,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'invoice-item', { outlets: { popup: invoiceItem.id + '/delete'} }]"
+                                [routerLink]="['/invoice-item', { outlets: { popup: invoiceItem.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

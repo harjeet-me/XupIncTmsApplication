@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-equipment" [routerLink]="['/equipment/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Equipment
+            Create a new Equipment
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,16 +26,20 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="equipment">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="equipment?.length === 0">
+        <span>No equipment found</span>
+    </div>
+    <div class="table-responsive" *ngIf="equipment?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Number</span></th>
-            <th><span>Type</span></th>
-            <th><span>Size</span></th>
-            <th><span>Insurance</span></th>
-            <th></th>
+            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Number</span></th>
+            <th scope="col" ><span>Type</span></th>
+            <th scope="col" ><span>Size</span></th>
+            <th scope="col" ><span>Insurance</span></th>
+            <th scope="col" ><span>Booking Item</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -44,8 +49,13 @@
                 <td>{{equipment.type}}</td>
                 <td>{{equipment.size}}</td>
                 <td>{{equipment.insurance}}</td>
+                <td>
+                    <div *ngIf="equipment.bookingItem">
+                        <a [routerLink]="['/booking-item', equipment.bookingItem?.id, 'view' ]" >{{equipment.bookingItem?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/equipment', equipment.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -59,7 +69,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'equipment', { outlets: { popup: equipment.id + '/delete'} }]"
+                                [routerLink]="['/equipment', { outlets: { popup: equipment.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

@@ -1,6 +1,4 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
@@ -8,9 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.xupinc.tms.v1.domain.enumeration.CountryEnum;
 
@@ -21,13 +18,14 @@ import com.xupinc.tms.v1.domain.enumeration.CountryEnum;
 @Entity
 @Table(name = "location")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "location")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "location")
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "address")
@@ -159,19 +157,15 @@ public class Location implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Location)) {
             return false;
         }
-        Location location = (Location) o;
-        if (location.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), location.getId());
+        return id != null && id.equals(((Location) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

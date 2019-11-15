@@ -1,61 +1,67 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { IDepartment } from 'app/shared/model/department.model';
+import { IDepartment, Department } from 'app/shared/model/department.model';
 import { DepartmentService } from './department.service';
 import { ILocation } from 'app/shared/model/location.model';
-import { LocationService } from 'app/entities/location';
+import { LocationService } from 'app/entities/location/location.service';
 
 @Component({
     selector: 'jhi-department-update',
     templateUrl: './department-update.component.html'
 })
 export class DepartmentUpdateComponent implements OnInit {
-    department: IDepartment;
     isSaving: boolean;
 
     locations: ILocation[];
+
+    editForm = this.fb.group({
+        id: [],
+        departmentName: [null, [Validators.required]],
+        location: []
+    });
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected departmentService: DepartmentService,
         protected locationService: LocationService,
-        protected activatedRoute: ActivatedRoute
+        protected activatedRoute: ActivatedRoute,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ department }) => {
-            this.department = department;
+            this.updateForm(department);
         });
-        this.locationService
-            .query({ filter: 'department-is-null' })
-            .pipe(
-                filter((mayBeOk: HttpResponse<ILocation[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ILocation[]>) => response.body)
-            )
-            .subscribe(
-                (res: ILocation[]) => {
-                    if (!this.department.location || !this.department.location.id) {
-                        this.locations = res;
-                    } else {
-                        this.locationService
-                            .find(this.department.location.id)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<ILocation>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<ILocation>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: ILocation) => (this.locations = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.locationService.query({ filter: 'department-is-null' }).subscribe(
+            (res: HttpResponse<ILocation[]>) => {
+                if (!this.editForm.get('location').value || !this.editForm.get('location').value.id) {
+                    this.locations = res.body;
+                } else {
+                    this.locationService
+                        .find(this.editForm.get('location').value.id)
+                        .subscribe(
+                            (subRes: HttpResponse<ILocation>) => (this.locations = [subRes.body].concat(res.body)),
+                            (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                        );
+                }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+
+    updateForm(department: IDepartment) {
+        this.editForm.patchValue({
+            id: department.id,
+            departmentName: department.departmentName,
+            location: department.location
+        });
     }
 
     previousState() {
@@ -64,15 +70,25 @@ export class DepartmentUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.department.id !== undefined) {
-            this.subscribeToSaveResponse(this.departmentService.update(this.department));
+        const department = this.createFromForm();
+        if (department.id !== undefined) {
+            this.subscribeToSaveResponse(this.departmentService.update(department));
         } else {
-            this.subscribeToSaveResponse(this.departmentService.create(this.department));
+            this.subscribeToSaveResponse(this.departmentService.create(department));
         }
     }
 
+    private createFromForm(): IDepartment {
+        return {
+            ...new Department(),
+            id: this.editForm.get(['id']).value,
+            departmentName: this.editForm.get(['departmentName']).value,
+            location: this.editForm.get(['location']).value
+        };
+    }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IDepartment>>) {
-        result.subscribe((res: HttpResponse<IDepartment>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
 
     protected onSaveSuccess() {
@@ -83,7 +99,6 @@ export class DepartmentUpdateComponent implements OnInit {
     protected onSaveError() {
         this.isSaving = false;
     }
-
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }

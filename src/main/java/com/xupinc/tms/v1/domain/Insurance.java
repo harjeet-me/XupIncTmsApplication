@@ -1,16 +1,13 @@
 package com.xupinc.tms.v1.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A Insurance.
@@ -18,13 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "insurance")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "insurance")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "insurance")
 public class Insurance implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "provider_number")
@@ -139,19 +137,15 @@ public class Insurance implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Insurance)) {
             return false;
         }
-        Insurance insurance = (Insurance) o;
-        if (insurance.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), insurance.getId());
+        return id != null && id.equals(((Insurance) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

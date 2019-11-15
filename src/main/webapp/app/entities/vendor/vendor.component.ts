@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { IVendor } from 'app/shared/model/vendor.model';
-import { AccountService } from 'app/core';
 import { VendorService } from './vendor.service';
 
 @Component({
@@ -15,20 +13,13 @@ import { VendorService } from './vendor.service';
 })
 export class VendorComponent implements OnInit, OnDestroy {
     vendors: IVendor[];
-    currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
 
-    constructor(
-        protected vendorService: VendorService,
-        protected jhiAlertService: JhiAlertService,
-        protected eventManager: JhiEventManager,
-        protected activatedRoute: ActivatedRoute,
-        protected accountService: AccountService
-    ) {
+    constructor(protected vendorService: VendorService, protected eventManager: JhiEventManager, protected activatedRoute: ActivatedRoute) {
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+                ? this.activatedRoute.snapshot.queryParams['search']
                 : '';
     }
 
@@ -38,26 +29,13 @@ export class VendorComponent implements OnInit, OnDestroy {
                 .search({
                     query: this.currentSearch
                 })
-                .pipe(
-                    filter((res: HttpResponse<IVendor[]>) => res.ok),
-                    map((res: HttpResponse<IVendor[]>) => res.body)
-                )
-                .subscribe((res: IVendor[]) => (this.vendors = res), (res: HttpErrorResponse) => this.onError(res.message));
+                .subscribe((res: HttpResponse<IVendor[]>) => (this.vendors = res.body));
             return;
         }
-        this.vendorService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IVendor[]>) => res.ok),
-                map((res: HttpResponse<IVendor[]>) => res.body)
-            )
-            .subscribe(
-                (res: IVendor[]) => {
-                    this.vendors = res;
-                    this.currentSearch = '';
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.vendorService.query().subscribe((res: HttpResponse<IVendor[]>) => {
+            this.vendors = res.body;
+            this.currentSearch = '';
+        });
     }
 
     search(query) {
@@ -75,9 +53,6 @@ export class VendorComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.accountService.identity().then(account => {
-            this.currentAccount = account;
-        });
         this.registerChangeInVendors();
     }
 
@@ -90,10 +65,6 @@ export class VendorComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInVendors() {
-        this.eventSubscriber = this.eventManager.subscribe('vendorListModification', response => this.loadAll());
-    }
-
-    protected onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
+        this.eventSubscriber = this.eventManager.subscribe('vendorListModification', () => this.loadAll());
     }
 }

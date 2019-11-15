@@ -1,11 +1,14 @@
 package com.xupinc.tms.v1.web.rest;
+
 import com.xupinc.tms.v1.domain.Equipment;
 import com.xupinc.tms.v1.service.EquipmentService;
 import com.xupinc.tms.v1.web.rest.errors.BadRequestAlertException;
-import com.xupinc.tms.v1.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +22,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing Equipment.
+ * REST controller for managing {@link com.xupinc.tms.v1.domain.Equipment}.
  */
 @RestController
 @RequestMapping("/api")
@@ -29,6 +32,9 @@ public class EquipmentResource {
 
     private static final String ENTITY_NAME = "equipment";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final EquipmentService equipmentService;
 
     public EquipmentResource(EquipmentService equipmentService) {
@@ -36,11 +42,11 @@ public class EquipmentResource {
     }
 
     /**
-     * POST  /equipment : Create a new equipment.
+     * {@code POST  /equipment} : Create a new equipment.
      *
-     * @param equipment the equipment to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new equipment, or with status 400 (Bad Request) if the equipment has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param equipment the equipment to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new equipment, or with status {@code 400 (Bad Request)} if the equipment has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/equipment")
     public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) throws URISyntaxException {
@@ -50,18 +56,18 @@ public class EquipmentResource {
         }
         Equipment result = equipmentService.save(equipment);
         return ResponseEntity.created(new URI("/api/equipment/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /equipment : Updates an existing equipment.
+     * {@code PUT  /equipment} : Updates an existing equipment.
      *
-     * @param equipment the equipment to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated equipment,
-     * or with status 400 (Bad Request) if the equipment is not valid,
-     * or with status 500 (Internal Server Error) if the equipment couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param equipment the equipment to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated equipment,
+     * or with status {@code 400 (Bad Request)} if the equipment is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the equipment couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/equipment")
     public ResponseEntity<Equipment> updateEquipment(@RequestBody Equipment equipment) throws URISyntaxException {
@@ -71,14 +77,15 @@ public class EquipmentResource {
         }
         Equipment result = equipmentService.save(equipment);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, equipment.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, equipment.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /equipment : get all the equipment.
+     * {@code GET  /equipment} : get all the equipment.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of equipment in body
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of equipment in body.
      */
     @GetMapping("/equipment")
     public List<Equipment> getAllEquipment() {
@@ -87,10 +94,10 @@ public class EquipmentResource {
     }
 
     /**
-     * GET  /equipment/:id : get the "id" equipment.
+     * {@code GET  /equipment/:id} : get the "id" equipment.
      *
-     * @param id the id of the equipment to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the equipment, or with status 404 (Not Found)
+     * @param id the id of the equipment to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the equipment, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/equipment/{id}")
     public ResponseEntity<Equipment> getEquipment(@PathVariable Long id) {
@@ -100,29 +107,28 @@ public class EquipmentResource {
     }
 
     /**
-     * DELETE  /equipment/:id : delete the "id" equipment.
+     * {@code DELETE  /equipment/:id} : delete the "id" equipment.
      *
-     * @param id the id of the equipment to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the equipment to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/equipment/{id}")
     public ResponseEntity<Void> deleteEquipment(@PathVariable Long id) {
         log.debug("REST request to delete Equipment : {}", id);
         equipmentService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/equipment?query=:query : search for the equipment corresponding
+     * {@code SEARCH  /_search/equipment?query=:query} : search for the equipment corresponding
      * to the query.
      *
-     * @param query the query of the equipment search
-     * @return the result of the search
+     * @param query the query of the equipment search.
+     * @return the result of the search.
      */
     @GetMapping("/_search/equipment")
     public List<Equipment> searchEquipment(@RequestParam String query) {
         log.debug("REST request to search Equipment for query {}", query);
         return equipmentService.search(query);
     }
-
 }

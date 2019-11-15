@@ -1,14 +1,11 @@
 package com.xupinc.tms.v1.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Region.
@@ -16,13 +13,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "region")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "region")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "region")
 public class Region implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "region_name")
@@ -56,19 +54,15 @@ public class Region implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Region)) {
             return false;
         }
-        Region region = (Region) o;
-        if (region.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), region.getId());
+        return id != null && id.equals(((Region) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

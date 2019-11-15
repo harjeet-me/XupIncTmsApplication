@@ -4,10 +4,11 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-job" [routerLink]="['/job/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Job
+            Create a new Job
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
@@ -25,16 +26,19 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="jobs">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="jobs?.length === 0">
+        <span>No jobs found</span>
+    </div>
+    <div class="table-responsive" *ngIf="jobs?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="jobTitle"><span>Job Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="minSalary"><span>Min Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="maxSalary"><span>Max Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="employee.id"><span>Employee</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
+            <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="jobTitle"><span>Job Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="minSalary"><span>Min Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="maxSalary"><span>Max Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="employee.id"><span>Employee</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -45,11 +49,11 @@
                 <td>{{job.maxSalary}}</td>
                 <td>
                     <div *ngIf="job.employee">
-                        <a [routerLink]="['../employee', job.employee?.id, 'view' ]" >{{job.employee?.id}}</a>
+                        <a [routerLink]="['/employee', job.employee?.id, 'view' ]" >{{job.employee?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/job', job.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -63,7 +67,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'job', { outlets: { popup: job.id + '/delete'} }]"
+                                [routerLink]="['/job', { outlets: { popup: job.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
@@ -76,9 +80,9 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="jobs && jobs.length">
+    <div [hidden]="jobs?.length === 0">
         <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
         <div class="row justify-content-center">
             <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>

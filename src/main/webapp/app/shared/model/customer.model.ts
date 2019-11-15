@@ -2,12 +2,7 @@ import { ILocation } from 'app/shared/model/location.model';
 import { IContact } from 'app/shared/model/contact.model';
 import { IInsurance } from 'app/shared/model/insurance.model';
 import { IBooking } from 'app/shared/model/booking.model';
-
-export const enum CountryEnum {
-    USA = 'USA',
-    CANADA = 'CANADA',
-    MEXICO = 'MEXICO'
-}
+import { CountryEnum } from 'app/shared/model/enumerations/country-enum.model';
 
 export interface ICustomer {
     id?: number;

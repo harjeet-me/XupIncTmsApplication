@@ -1,61 +1,67 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-driver-heading">Create or edit a Driver</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!driver.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="driver.id" readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_company">Company</label>
                     <input type="text" class="form-control" name="company" id="field_company"
-                        [(ngModel)]="driver.company" />
+                           formControlName="company"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_firstName">First Name</label>
                     <input type="text" class="form-control" name="firstName" id="field_firstName"
-                        [(ngModel)]="driver.firstName" />
+                           formControlName="firstName"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_lastName">Last Name</label>
                     <input type="text" class="form-control" name="lastName" id="field_lastName"
-                        [(ngModel)]="driver.lastName" />
+                           formControlName="lastName"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_email">Email</label>
                     <input type="text" class="form-control" name="email" id="field_email"
-                        [(ngModel)]="driver.email" />
+                           formControlName="email"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_phoneNumber">Phone Number</label>
                     <input type="number" class="form-control" name="phoneNumber" id="field_phoneNumber"
-                        [(ngModel)]="driver.phoneNumber" />
+                           formControlName="phoneNumber"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_licenceNumber">Licence Number</label>
                     <input type="number" class="form-control" name="licenceNumber" id="field_licenceNumber"
-                        [(ngModel)]="driver.licenceNumber" />
+                           formControlName="licenceNumber"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_dob">Dob</label>
                     <div class="input-group">
-                        <input id="field_dob" type="text" class="form-control" name="dob" ngbDatepicker  #dobDp="ngbDatepicker" [(ngModel)]="driver.dob"
-                        />
+                        <input id="field_dob" type="text" class="form-control" name="dob" ngbDatepicker  #dobDp="ngbDatepicker" formControlName="dob"/>
                         <span class="input-group-append">
                             <button type="button" class="btn btn-secondary" (click)="dobDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
                         </span>
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bookingItem">Booking Item</label>
+                    <select class="form-control" id="field_bookingItem" name="bookingItem" formControlName="bookingItem">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="bookingItemOption.id === editForm.get('bookingItem').value?.id ? editForm.get('bookingItem').value : bookingItemOption" *ngFor="let bookingItemOption of bookingitems; trackBy: trackBookingItemById">{{bookingItemOption.description}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
